@@ -8,6 +8,7 @@ import {profile} from '../profiler/decorator';
 import {initializeTask} from '../tasks/initializer';
 import {Task} from '../tasks/Task';
 import {NEW_OVERMIND_INTERVAL} from '../~settings';
+import {Directive} from "../directives/Directive";
 
 export function getOverlord(creep: Zerg | Creep): Overlord | null {
 	if (creep.memory[_MEM.OVERLORD]) {
@@ -609,6 +610,55 @@ export class Zerg {
 
 	goTo(destination: RoomPosition | HasPos, options: MoveOptions = {}) {
 		return Movement.goTo(this, destination, options);
+	}
+
+	// Yes this should live in Movement
+	goToWithWaypoints(destination: RoomPosition | HasPos, waypoints: string[], options: MoveOptions = {}) {
+		if (!waypoints || waypoints.length == 0 || !this.memory._go) {
+			return this.goTo(destination, options);
+		} else {
+			const currentWaypoint = this.memory._go!.waypoint;
+			if (!currentWaypoint || waypoints.indexOf(currentWaypoint) == -1) {
+				// probably flag
+				const firstWaypoint = deref(waypoints[0]);
+				if (firstWaypoint) {
+					if (this.pos.roomName != firstWaypoint.pos.roomName) {
+						this.memory._go.waypoint = waypoints[0];
+					} else {
+						// FIXME this is not safe access at all
+						this.memory._go.waypoint = waypoints[1];
+					}
+				}
+			} else {
+				// If targeting a current waypoint
+				const currentTarget = deref(currentWaypoint);
+				if (!currentTarget) {
+					// TODO refactor this shit
+				} else if (this.pos.isEqualTo(currentTarget)) {
+					// If at waypoint then move on
+					const nextWaypoint = waypoints[waypoints.indexOf(currentWaypoint)+1];
+					if (nextWaypoint) {
+						this.memory._go.waypoint = nextWaypoint;
+						this.goToWithWaypoints(destination, waypoints, options);
+					}
+				} else if (this.pos.isNearTo(currentTarget)) {
+					// If next to waypoint, move onto it then move on (portal code)
+					const res =this.move(this.pos.getDirectionTo(currentTarget));
+					if (res == OK) {
+						const nextWaypoint = waypoints[waypoints.indexOf(currentWaypoint)+1];
+						if (nextWaypoint) {
+							this.memory._go.waypoint = nextWaypoint;
+						}
+					}
+				} else {
+					// Otherwise just go for it
+					// notes to self - waypoints are just pairings now for portals
+					// in directive, when looking for colonies first find if near colony, if non then check near waypoint, then find colony near paired waypoint
+					this.goTo(currentTarget);
+				}
+			}
+
+		}
 	}
 
 	goToRoom(roomName: string, options: MoveOptions = {}) {

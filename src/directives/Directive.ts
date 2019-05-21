@@ -5,11 +5,13 @@ import {Overlord} from '../overlords/Overlord';
 import {profile} from '../profiler/decorator';
 import {equalXYR, randomHex} from '../utilities/utils';
 import {NotifierPriority} from './Notifier';
+import {DirectiveWaypoint} from "./targeting/waypoint";
 
 interface DirectiveCreationOptions {
 	memory?: FlagMemory;
 	name?: string;
 	quiet?: boolean;
+	portal?: boolean;
 }
 
 const DEFAULT_MAX_PATH_LENGTH = 600;
@@ -34,6 +36,14 @@ export abstract class Directive {
 	room: Room | undefined;						// Flag room
 	memory: FlagMemory;							// Flag memory
 	overlords: { [name: string]: Overlord };	// Overlords
+	waypoints: string[];
+	// waypoints: { [name: string]: string[]}; // Eventually 2 way but for now 1 way
+	/*
+	{
+		to: [colony, first waypoint, portal entry, portal exit, actual directive]
+		from: [directive, portal exit, portal entry, colony]
+	}
+	 */
 
 	constructor(flag: Flag, colonyFilter?: (colony: Colony) => boolean) {
 		this.memory = flag.memory;

@@ -97,6 +97,7 @@ interface MoveData {
 	fleeWait?: number;
 	destination?: ProtoPos;
 	priority?: number;
+	waypoint?: string;
 }
 
 interface LoggerMemory {
