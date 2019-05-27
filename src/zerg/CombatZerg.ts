@@ -158,6 +158,24 @@ export class CombatZerg extends Zerg {
 	}
 
 	/**
+	 * Automatically melee-attack the best creep in range
+	 */
+	autoRADismantle(possibleTargets = this.room.hostiles, structureTargets?: Structure[]) {
+		const dismantleTarget = CombatTargeting.findBestStructureTargetInRange(this, 1, undefined, structureTargets);
+		const raTarget = CombatTargeting.findBestCreepTargetInRange(this, 3, possibleTargets);
+		this.debug(`Dismantle target: ${dismantleTarget} ||| Ranged Attack Target: ${raTarget}`);
+		if (dismantleTarget) {
+			this.dismantle(dismantleTarget);
+		}
+		// If enemy creep hit that dude, otherwise AOE
+		if (raTarget) {
+			this.rangedAttack(raTarget);
+		} else {
+			this.rangedMassAttack();
+		}
+	}
+
+	/**
 	 * Automatically ranged-attack the best creep in range
 	 */
 	autoRanged(possibleTargets = this.room.hostiles, allowMassAttack = true) {

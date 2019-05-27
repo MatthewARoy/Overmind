@@ -278,6 +278,13 @@ export const CombatSetups = {
 			sizeLimit: Infinity,
 		}),
 
+		// Idea for dismantler healers is to grab from energy pile and drop at feet to make more disappear
+		// boosted_T3_WITH_CARRY: new CreepSetup(Roles.healer, {
+		// 	pattern  : [TOUGH, TOUGH, HEAL, HEAL, HEAL, HEAL, HEAL, HEAL, MOVE, MOVE],
+		// 	sizeLimit: Infinity,
+		// 	suffix: [CARRY]
+		// }),
+
 	},
 
 	/**
@@ -314,6 +321,11 @@ export const CombatSetups = {
 
 		boosted_T3: new CreepSetup(Roles.dismantler, {
 			pattern  : [TOUGH, TOUGH, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
+			sizeLimit: Infinity,
+		}),
+
+		rangedDismantle_boosted_T3: new CreepSetup(Roles.dismantler, {
+			pattern  : [TOUGH, TOUGH, WORK, WORK, WORK, WORK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
 			sizeLimit: Infinity,
 		}),
 

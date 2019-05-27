@@ -26,7 +26,13 @@ export class CombatTargeting {
 	/**
 	 * Finds the best target within a given range that a zerg can currently attack
 	 */
-	static findBestStructureTargetInRange(zerg: Zerg, range: number, allowUnowned = true): Structure | undefined {
+	static findBestStructureTargetInRange(zerg: Zerg, range: number, allowUnowned = true, targets?: Structure[]): Structure | undefined {
+		if (targets) {
+			const targetsInRange = targets.filter(target => target.pos.getRangeTo(zerg.pos) <= range);
+			if (targetsInRange.length > 0) {
+				return targetsInRange[0];
+			}
+		}
 		let nearbyStructures = _.filter(zerg.room.hostileStructures,
 										s => zerg.pos.inRangeToXY(s.pos.x, s.pos.y, range));
 		// If no owned structures to attack and not in colony room or outpost, target unowned structures
