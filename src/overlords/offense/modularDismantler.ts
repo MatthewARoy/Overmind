@@ -30,7 +30,7 @@ export class ModularDismantlerOverlord extends Overlord {
 		this.directive = directive;
 		this.dismantlers = this.zerg(Roles.modularDismantler, {
 			notifyWhenAttacked: false,
-			boostWishlist     : [boostResources.work[3], boostResources.tough[3], boostResources.move[3]]
+			boostWishlist     : [boostResources.dismantle[3], boostResources.tough[3], boostResources.move[3]]
 		});
 	}
 
