@@ -8,7 +8,7 @@ import {OverlordPriority} from '../../priorities/priorities_overlords';
 import {profile} from '../../profiler/decorator';
 import {boostResources} from '../../resources/map_resources';
 import {CombatTargeting} from '../../targeting/CombatTargeting';
-import {CombatZerg} from '../../zerg/CombatZerg';
+import {Zerg} from '../../zerg/Zerg';
 import {Overlord} from '../Overlord';
 
 /**
@@ -18,7 +18,7 @@ import {Overlord} from '../Overlord';
 export class ModularDismantlerOverlord extends Overlord {
 
 	directive: DirectiveModularDismantler;
-	dismantlers: CombatZerg[];
+	dismantlers: Zerg[];
 
 	static settings = {
 		retreatHitsPercent : 0.85,
@@ -28,13 +28,13 @@ export class ModularDismantlerOverlord extends Overlord {
 	constructor(directive: DirectiveModularDismantler, priority = OverlordPriority.offense.modularDismantler) {
 		super(directive, 'modularDismantler', priority);
 		this.directive = directive;
-		this.dismantlers = this.combatZerg(Roles.modularDismantler, {
+		this.dismantlers = this.zerg(Roles.modularDismantler, {
 			notifyWhenAttacked: false,
 			boostWishlist     : [boostResources.work[3], boostResources.tough[3], boostResources.move[3]]
 		});
 	}
 
-	private findTarget(dismantler: CombatZerg): Creep | Structure | undefined {
+	private findTarget(dismantler: Zerg): Creep | Structure | undefined {
 		if (this.room) {
 			// Prioritize specifically targeted structures first
 			const targetingDirectives = DirectiveTargetSiege.find(this.room.flags) as DirectiveTargetSiege[];
@@ -50,7 +50,7 @@ export class ModularDismantlerOverlord extends Overlord {
 		}
 	}
 
-	private dismantleActions(dismantler: CombatZerg): void {
+	private dismantleActions(dismantler: Zerg): void {
 		const target = this.findTarget(dismantler);
 		if (target) {
 			if (dismantler.pos.isNearTo(target)) {
@@ -61,7 +61,7 @@ export class ModularDismantlerOverlord extends Overlord {
 		}
 	}
 
-	private handleSquad(dismantler: CombatZerg): void {
+	private handleSquad(dismantler: Zerg): void {
 		if (!dismantler.inSameRoomAs(this)) {
 			Movement.goToRoom(dismantler,this.pos.roomName);
 		} else {
@@ -83,7 +83,7 @@ export class ModularDismantlerOverlord extends Overlord {
 		}
 
 		const attackerSetup = this.canBoostSetup(CombatSetups.modularDismantler.boosted_T3) ? CombatSetups.modularDismantler.boosted_T3
-																				  : CombatSetups.zerglings.default;
+																				  : CombatSetups.modularDismantler.default;
 		this.wishlist(amount, attackerSetup);
 	}
 
