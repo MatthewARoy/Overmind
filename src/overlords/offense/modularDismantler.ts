@@ -1,7 +1,6 @@
 import {CombatSetups, Roles} from '../../creepSetups/setups';
 import {DirectiveModularDismantler} from '../../directives/offense/modularDismantler';
 import {DirectiveTargetSiege} from '../../directives/targeting/siegeTarget';
-import {CombatIntel} from '../../intel/CombatIntel';
 import {RoomIntel} from '../../intel/RoomIntel';
 import {Movement} from '../../movement/Movement';
 import {OverlordPriority} from '../../priorities/priorities_overlords';
@@ -30,7 +29,7 @@ export class ModularDismantlerOverlord extends Overlord {
 		this.directive = directive;
 		this.dismantlers = this.zerg(Roles.modularDismantler, {
 			notifyWhenAttacked: false,
-			boostWishlist     : [boostResources.dismantle[3], boostResources.tough[3], boostResources.move[3]]
+			boostWishlist     : [boostResources.dismantle[3], boostResources.move[3]]
 		});
 	}
 
