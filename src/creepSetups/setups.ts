@@ -22,6 +22,7 @@ export const Roles = {
 	ranged    : 'hydralisk',
 	healer    : 'transfuser',
 	dismantler: 'lurker',
+	modularDismantler: 'modularDismantler',
 };
 
 /**
@@ -314,6 +315,24 @@ export const CombatSetups = {
 
 		boosted_T3: new CreepSetup(Roles.dismantler, {
 			pattern  : [TOUGH, TOUGH, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
+			sizeLimit: Infinity,
+		}),
+
+	},
+	modularDismantler: {
+
+		default: new CreepSetup(Roles.modularDismantler, {
+			pattern  : [WORK, MOVE],
+			sizeLimit: Infinity,
+		}),
+
+		armored: new CreepSetup(Roles.modularDismantler, {
+			pattern  : [TOUGH, WORK, WORK, WORK, MOVE, MOVE, MOVE, MOVE],
+			sizeLimit: Infinity,
+		}),
+
+		boosted_T3: new CreepSetup(Roles.modularDismantler, {
+			pattern  : [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, MOVE, MOVE],
 			sizeLimit: Infinity,
 		}),
 
