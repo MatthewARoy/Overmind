@@ -62,16 +62,18 @@ export class HaulingOverlord extends Overlord {
 					}
 				}
 				// Withdraw from store structure
-				if (this.directive.storeStructure) {
+				let targetStruct = this.directive.memory.lootRoom ?
+					this.directive.findAllExposedGoodies()[0] : this.directive.storeStructure;
+				if (targetStruct) {
 					let store: { [resourceType: string]: number } = {};
-					if (isStoreStructure(this.directive.storeStructure)) {
-						store = this.directive.storeStructure.store;
+					if (isStoreStructure(targetStruct)) {
+						store = targetStruct.store;
 					} else {
-						store = {energy: this.directive.storeStructure.energy};
+						store = {energy: targetStruct.energy};
 					}
 					for (const resourceType in store) {
 						if (store[resourceType] > 0) {
-							hauler.task = Tasks.withdraw(this.directive.storeStructure, <ResourceConstant>resourceType);
+							hauler.task = Tasks.withdraw(targetStruct, <ResourceConstant>resourceType);
 							return;
 						}
 					}

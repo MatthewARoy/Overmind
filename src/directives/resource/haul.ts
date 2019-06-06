@@ -1,11 +1,13 @@
-import {isStoreStructure} from '../../declarations/typeGuards';
+import {EnergyStructure, isEnergyStructure, isStoreStructure, StoreStructure} from '../../declarations/typeGuards';
 import {HaulingOverlord} from '../../overlords/situational/hauler';
 import {profile} from '../../profiler/decorator';
 import {Directive} from '../Directive';
+import {hasMinerals} from "../../utilities/utils";
 
 
 interface DirectiveHaulMemory extends FlagMemory {
 	totalResources?: number;
+	lootRoom?: boolean;
 }
 
 
@@ -40,11 +42,35 @@ export class DirectiveHaul extends Directive {
 		if (!this.pos.isVisible) {
 			return {};
 		}
-		if (!this._drops) {
+		if (this.memory.lootRoom && this.room) {
+			const drops = this.room.find(FIND_DROPPED_RESOURCES);
+			this._drops = _.groupBy(drops, drop => drop.resourceType);
+		} else if (!this._drops) {
 			const drops = (this.pos.lookFor(LOOK_RESOURCES) || []) as Resource[];
 			this._drops = _.groupBy(drops, drop => drop.resourceType);
 		}
 		return this._drops;
+	}
+
+	findAllExposedGoodies(): (StoreStructure | EnergyStructure)[]{
+		if (!this.room) {
+			return [];
+		}
+		const exposedGoodies = this.room.find(FIND_STRUCTURES).filter(structure =>
+			(isStoreStructure(structure) || isEnergyStructure(structure)) && structure.pos.lookForStructure(STRUCTURE_RAMPART)
+			== undefined) as (StoreStructure | EnergyStructure)[];
+		return  exposedGoodies.filter(structure => {
+			if (structure.structureType == STRUCTURE_LAB) {
+				let struct = structure as StructureLab;
+				if (struct.energy > 0 || struct.mineralAmount > 0) {
+					return true;
+				}
+			} else if (isEnergyStructure(structure)) {
+				return structure.energy > 0;
+			} else if (isStoreStructure(structure)) {
+				return _.sum(this.store) > 0;
+			}
+		});
 	}
 
 	get hasDrops(): boolean {
@@ -64,7 +90,17 @@ export class DirectiveHaul extends Directive {
 		if (!this._store) {
 			// Merge the "storage" of drops with the store of structure
 			let store: { [resourceType: string]: number } = {};
-			if (this.storeStructure) {
+			if (this.memory.lootRoom) {
+				let targets = this.findAllExposedGoodies();
+				if (targets.length > 0) {
+					const target = targets[0];
+					if (isStoreStructure(target)) {
+						store = target.store;
+					} else {
+						store = {energy: target.energy};
+					}
+				}
+			} else if (this.storeStructure) {
 				if (isStoreStructure(this.storeStructure)) {
 					store = this.storeStructure.store;
 				} else {
