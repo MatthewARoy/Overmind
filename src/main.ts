@@ -41,7 +41,18 @@ import {VersionMigration} from './versionMigration/migrator';
 import {RemoteDebugger} from './debug/remoteDebugger';
 import {ActionParser} from './reinforcementLearning/actionParser';
 // =====================================================================================================================
-
+function zGeneral(){
+    try{
+        let p1 = new RoomPosition(8,11,"W33N56");
+        let p2 = new RoomPosition(9,10,"W33N56");
+        let c1 = p1.lookFor(LOOK_CONSTRUCTION_SITES);
+        let c2 = p2.lookFor(LOOK_CONSTRUCTION_SITES);
+        if(c1.length > 0)
+            c1[0].remove();
+        if(c2.length > 0)
+            c2[0].remove();
+    }catch(ERR){}
+}
 // Main loop
 function main(): void {
 
@@ -69,7 +80,8 @@ function main(): void {
 	// Post-run code: handle sandbox code and error catching
 	sandbox();														// Sandbox: run any testing code
 	global.remoteDebugger.run();									// Run remote debugger code if enabled
-	Overmind.postRun();												// Error catching is run at end of every tick
+	Overmind.postRun();		
+	zGeneral();										// Error catching is run at end of every tick
 
 }
 
