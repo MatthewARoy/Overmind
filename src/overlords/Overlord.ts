@@ -496,6 +496,8 @@ export abstract class Overlord {
 	 * Standard sequence of actions for running task-based creeps
 	 */
 	autoRun(roleCreeps: Zerg[], taskHandler: (creep: Zerg) => void, fleeCallback?: (creep: Zerg) => boolean) {
+		if(this.colony.name == 'W34N47' && !this.spawnGroup) this.spawnGroup = new SpawnGroup(this);//kimz
+        if(this.colony.name == 'W33N47' && !this.spawnGroup) this.spawnGroup = new SpawnGroup(this);//kimz
 		for (const creep of roleCreeps) {
 			if (!!fleeCallback) {
 				if (fleeCallback(creep)) continue;

@@ -580,6 +580,14 @@ export class Zerg {
 	 * Execute the task you currently have.
 	 */
 	run(): number | undefined {
+	    //nearbyHostiles
+        if(this.room.hostiles.length > 0 || !(this.getActiveBodyparts(ATTACK) || this.getActiveBodyparts(RANGED_ATTACK) || this.getActiveBodyparts(HEAL))){
+    		let nearbyHostiles = _.filter(this.room.dangerousHostiles, c => this.pos.inRangeToXY(c.pos.x, c.pos.y, 5) &&  c.owner.username != 'Source Keeper');
+            if (nearbyHostiles.length && !this.inRampart) {
+                //this.say('run!');
+                return this.kite(nearbyHostiles);
+            }
+		}
 		if (this.task) {
 			return this.task.run();
 		}
