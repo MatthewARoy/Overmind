@@ -341,10 +341,10 @@ export class Colony {
 				.sortBy(e => e!.pos.getMultiRoomRangeTo(this.pos)).value() as StructureExtractor[]);
 		if (this.controller.level >= 6) {
 			_.forEach(this.extractors, extractor => //kimz
-				!(	extractor.id == '59f1c266a5165f24b259a5b3' ||
-              		extractor.id == '59f1c265a5165f24b259a52b' ||
-              		extractor.id == '59f1c266a5165f24b259a645' ||
-              		extractor.id == '59f1a15d82100e1594f382d0'
+				!(	extractor.id == '59f1c266a5165f24b259a5b3' || //W34N56
+              		extractor.id == '59f1c265a5165f24b259a52b' || //W36N45
+              		extractor.id == '59f1c266a5165f24b259a645' || //W25N55!!! extractor
+              		extractor.id == '59f1a15d82100e1594f382d0'	  //W25N55!!! source
               		//extractor.id == '59f1c266a5165f24b259a5fd'
             ) &&
 				DirectiveExtract.createIfNotPresent(extractor.pos, 'pos'));
