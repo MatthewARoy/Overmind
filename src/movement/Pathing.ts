@@ -160,7 +160,7 @@ export class Pathing {
 			direct      : true,
 		});
 		const ret = this.findPath(startPos, endPos, options);
-		if (ret.incomplete) log.alert(`Pathing: incomplete path from ${startPos.print} to ${endPos.print}!`);
+		if (ret.incomplete && (endPos.roomName != 'W26N51')) log.alert(`Pathing: incomplete path from ${startPos.print} to ${endPos.print}!`);
 		return ret;
 	}
 
