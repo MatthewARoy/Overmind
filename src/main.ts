@@ -51,7 +51,24 @@ function zGeneral(){
             c1[0].remove();
         if(c2.length > 0)
             c2[0].remove();
-    }catch(ERR){}
+	}catch(ERR){}
+
+	if((Game.time) % 111 == 0){//
+		let resources = [RESOURCE_CATALYST,	RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN];
+		_.forEach(resources,m => {
+	    	_.forEach(Game.rooms, room => {
+	    		if(room.terminal && (room.terminal.store[m] || 0 ) < 2000 && room.terminal.cooldown == 0){
+	    			let or = Game.market.getAllOrders(order => order.resourceType == m && order.type == ORDER_SELL && order.price < 0.3);
+	    			if(or.length > 0){
+	    				let r = Game.market.deal(or[0].id,2000 - (room.terminal.store[m] || 0 ),room.name);
+	    				if ( r == 0 ){
+	    					console.log(room.name + " " + (2000 - (room.terminal.store[m] || 0 )) + " " + (m) + "@ " +or[0].price);
+	    				}
+	    			}
+	    		}
+	    	});
+		});
+    }
 }
 // Main loop
 function main(): void {
