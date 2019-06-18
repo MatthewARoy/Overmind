@@ -36,9 +36,6 @@ export class RangedDefenseOverlord extends CombatOverlord {
 	    if (this.room.hostiles.length > 0) {
             hydralisk.autoCombat(this.room.name);
         } else {
-            if (hydralisk.pos.getRangeTo(this.directive.pos) > 4) {
-                hydralisk.goTo(this.directive.pos);
-            }
             hydralisk.doMedicActions(this.room.name);
         }
     }

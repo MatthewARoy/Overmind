@@ -583,9 +583,9 @@ export class Zerg {
 	    //nearbyHostiles
         if(this.room.hostiles.length > 0 || !(this.getActiveBodyparts(ATTACK) || this.getActiveBodyparts(RANGED_ATTACK) || this.getActiveBodyparts(HEAL))){
     		let nearbyHostiles = _.filter(this.room.dangerousHostiles, c => this.pos.inRangeToXY(c.pos.x, c.pos.y, 5) &&  c.owner.username != 'Source Keeper');
-            if (nearbyHostiles.length && !this.inRampart) {
+            if (nearbyHostiles.length && !this.inRampart && this.room && this.room.controller && !this.room.controller.safeModeCooldown) {
                 //this.say('run!');
-                return this.kite(nearbyHostiles);
+                return this.kite(nearbyHostiles); //KIMZ, change this to flee
             }
 		}
 		if (this.task) {

@@ -41,34 +41,79 @@ import {VersionMigration} from './versionMigration/migrator';
 import {RemoteDebugger} from './debug/remoteDebugger';
 import {ActionParser} from './reinforcementLearning/actionParser';
 // =====================================================================================================================
-function zGeneral(){
-    try{
-        let p1 = new RoomPosition(8,11,"W33N56");
-        let p2 = new RoomPosition(9,10,"W33N56");
-        let c1 = p1.lookFor(LOOK_CONSTRUCTION_SITES);
-        let c2 = p2.lookFor(LOOK_CONSTRUCTION_SITES);
-        if(c1.length > 0)
-            c1[0].remove();
-        if(c2.length > 0)
-            c2[0].remove();
-	}catch(ERR){}
-
-	if((Game.time) % 111 == 0){//
-		let resources = [RESOURCE_CATALYST,	RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN];
-		_.forEach(resources,m => {
-	    	_.forEach(Game.rooms, room => {
-	    		if(room.terminal && (room.terminal.store[m] || 0 ) < 2000 && room.terminal.cooldown == 0){
-	    			let or = Game.market.getAllOrders(order => order.resourceType == m && order.type == ORDER_SELL && order.price < 0.3);
-	    			if(or.length > 0){
-	    				let r = Game.market.deal(or[0].id,2000 - (room.terminal.store[m] || 0 ),room.name);
-	    				if ( r == 0 ){
-	    					console.log(room.name + " " + (2000 - (room.terminal.store[m] || 0 )) + " " + (m) + "@ " +or[0].price);
-	    				}
-	    			}
-	    		}
-	    	});
-		});
+function powerRoutine(roomName: string){
+    
+    let powerCreep = Game.powerCreeps[roomName];
+    let controller = Game.rooms[roomName].controller;
+    let terminal = Game.rooms[roomName].terminal;
+    let storage = Game.rooms[roomName].storage;
+    let powerSpawn = Game.rooms[roomName].powerSpawn;
+	
+    if( !powerCreep || !Game.rooms[roomName] || !controller || !terminal || !powerSpawn || !storage) {
+      return;
     }
+    if(!powerCreep.room){
+      powerCreep.spawn(powerSpawn);
+      return;
+	}
+	
+	powerCreep.renew(powerSpawn);
+    
+    if(!controller.isPowerEnabled){
+      powerCreep.pos.isNearTo(controller)?
+      powerCreep.enableRoom(controller):powerCreep.moveTo(controller);
+      return;
+    }
+
+    powerCreep.usePower(PWR_GENERATE_OPS);
+    
+    if((_.sum(powerCreep.carry) > 0)){//== powerCreep.carryCapacity) || (_.sum(powerCreep.carry) > 0 && powerCreep.ticksToLive < 50) ){
+      powerCreep.pos.isNearTo(storage)?
+      powerCreep.transfer(storage, RESOURCE_OPS):powerCreep.moveTo(storage);    
+      return;
+    }
+}
+function zGeneral(){
+	if((Game.time + 3800) % 12500 == 0){
+		let x = 0;
+		_.forEach(Game.rooms, room => {
+			if(
+		  room.controller &&
+		  room.controller.my &&
+		  room.nuker &&
+		  room.nuker.energy == 300000 &&
+		room.nuker.cooldown == 0 &&
+		  Game.map.getRoomLinearDistance(room.name, 'W28N57') <= 10 &&
+			x == 0){
+					room.nuker.launchNuke(new RoomPosition(25, 23, 'W28N57'));
+					x++;
+			} 
+		});
+	}
+	if ((Game.time) % 111 == 0) { //
+		let resources = [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, 
+						 RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN];
+		_.forEach(resources, m => {
+			_.forEach(Game.rooms, room => {
+				if (room.terminal && (room.terminal.store[m] || 0) < 2000 && room.terminal.cooldown == 0) {
+					let or = Game.market.getAllOrders(order => 
+							 order.resourceType == m && order.type == ORDER_SELL && order.price < 0.3);
+					if (or.length > 0) {
+						let r = Game.market.deal(or[0].id, 2000 - (room.terminal.store[m] || 0), room.name);
+						if (r == 0) {
+							console.log(room.name + " " + (2000 - (room.terminal.store[m] || 0)) + 
+							" " + (m) + "@ " + or[0].price);
+						}
+					}
+				}
+			});
+		});
+	}
+	if(Game.time % 50 == 0){
+    	let rooms = ['W32N45','W32N47','W27N54','W29N52','W33N56','W35N59']; //powerCreep name = roomName
+        rooms.forEach(powerRoutine);
+	}
+	
 }
 // Main loop
 function main(): void {
@@ -96,13 +141,8 @@ function main(): void {
 	// Post-run code: handle sandbox code and error catching -----------------------------------------------------------
 	sandbox();														// Sandbox: run any testing code
 	global.remoteDebugger.run();									// Run remote debugger code if enabled
-<<<<<<< HEAD
 	Overmind.postRun();		
-	zGeneral();										// Error catching is run at end of every tick
-
-=======
-	Overmind.postRun();												// Error catching is run at end of every tick
->>>>>>> master
+	zGeneral();										// Error catching is run at end of every tick										// Error catching is run at end of every tick
 }
 
 // Main loop if RL mode is enabled (~settings.ts)

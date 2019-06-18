@@ -313,22 +313,22 @@ export class Colony {
 		for (const source of this.sources) {
 			if(!(//kimz
 				source.id == '59f1a0d282100e1594f374cf' ||
-				source.id == '59f1a0be82100e1594f372af' ||
-				source.id == '59f1a0be82100e1594f372ae' ||
-				source.id == '59f1a14e82100e1594f3808a' ||
-				source.id == '59f1a14e82100e1594f38088' ||
-				source.id == '59f1a13a82100e1594f37f04' ||
-				source.id == '59f1a13a82100e1594f37f05' ||
-				source.id == '59f1a0bc82100e1594f3727d' ||
-				source.id == '59f1a0bc82100e1594f3727a' ||
-				source.id == '59f1a0af82100e1594f37060' ||
-				source.id == '59f1a0d282100e1594f374d2' ||
-				source.id == '59f1a0d282100e1594f374d5' ||
-				source.id == '59f1a0d282100e1594f374d7' || //
-				source.id == '59f1a0ae82100e1594f37038' || //
-				source.id == '59f1a0ae82100e1594f3703c' || //
-				source.id == '59f1a15d82100e1594f382d0' || //
-				source.id == '59f1a15d82100e1594f382d0'
+                //source.id == '59f1a0be82100e1594f372af' ||
+                //source.id == '59f1a0be82100e1594f372ae' ||
+                source.id == '59f1a14e82100e1594f3808a' ||
+                source.id == '59f1a14e82100e1594f38088' ||
+                source.id == '59f1a13a82100e1594f37f04' ||
+                source.id == '59f1a13a82100e1594f37f05' ||
+                source.id == '59f1a0bc82100e1594f3727d' ||
+                source.id == '59f1a0bc82100e1594f3727a' ||
+                source.id == '59f1a0af82100e1594f37060' ||
+                source.id == '59f1a0d282100e1594f374d2' ||
+                source.id == '59f1a0d282100e1594f374d5' ||
+                source.id == '59f1a0d282100e1594f374d7' || //
+                source.id == '59f1a0ae82100e1594f37038' || //
+                source.id == '59f1a0ae82100e1594f3703c' || //
+                source.id == '59f1a15d82100e1594f382d0' || //
+                source.id == '59f1a15d82100e1594f382d0'
 				))
 			DirectiveHarvest.createIfNotPresent(source.pos, 'pos');
 		}
@@ -342,9 +342,10 @@ export class Colony {
 		if (this.controller.level >= 6) {
 			_.forEach(this.extractors, extractor => //kimz
 				!(	extractor.id == '59f1c266a5165f24b259a5b3' || //W34N56
-              		extractor.id == '59f1c265a5165f24b259a52b' || //W36N45
-              		extractor.id == '59f1c266a5165f24b259a645' || //W25N55!!! extractor
-              		extractor.id == '59f1a15d82100e1594f382d0'	  //W25N55!!! source
+                	extractor.id == '59f1c265a5165f24b259a52b' || //W36N45
+                	extractor.id == '59f1c266a5165f24b259a645' || //W25N55!!! extractor
+                	extractor.id == '59f1a15d82100e1594f382d0' //W25N55!!! source
+            //extractor.id == '59f1c266a5165f24b259a5fd'
               		//extractor.id == '59f1c266a5165f24b259a5fd'
             ) &&
 				DirectiveExtract.createIfNotPresent(extractor.pos, 'pos'));
