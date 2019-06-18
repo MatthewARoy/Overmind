@@ -327,7 +327,7 @@ export class Colony {
                 source.id == '59f1a0d282100e1594f374d7' || //
                 source.id == '59f1a0ae82100e1594f37038' || //
                 source.id == '59f1a0ae82100e1594f3703c' || //
-                source.id == '59f1a15d82100e1594f382d0' || //
+                source.id == '59f1a0ae82100e1594f3703a' || //
                 source.id == '59f1a15d82100e1594f382d0'
 				))
 			DirectiveHarvest.createIfNotPresent(source.pos, 'pos');
