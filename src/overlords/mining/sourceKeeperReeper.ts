@@ -78,8 +78,8 @@ export class SourceReaperOverlord extends CombatOverlord {
 								lair.id == '59f1a0d282100e1594f374d6' ||
 								lair.id == '59f1a0d282100e1594f374d1' ||
 								lair.id == '59f1a0ae82100e1594f3703d' ||
-								lair.id == '59f1a0ae82100e1594f37039'
-								//lair.id == '59f1a14e82100e1594f38089'
+								lair.id == '59f1a0ae82100e1594f37039' ||
+								lair.id == '59f1a0ae82100e1594f3703b'
 								) &&
 							  lair.pos.findInRange(lair.room.sourceKeepers, 5).length > 0);
 		if (activeLair) return activeLair;
