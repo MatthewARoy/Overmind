@@ -74,6 +74,14 @@ function powerRoutine(roomName: string){
     }
 }
 function zGeneral(){
+
+	for(let roomName in Memory.colonies){
+		let room = Game.rooms[roomName];
+		if(room && room.my && room.powerSpawn && room.powerSpawn.power > 0){
+			room.powerSpawn.processPower();
+		}
+	}
+
 	if((Game.time + 3800) % 12500 == 0){
 		let x = 0;
 		_.forEach(Game.rooms, room => {
@@ -94,7 +102,8 @@ function zGeneral(){
 		let resources = [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, 
 						 RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN];
 		_.forEach(resources, m => {
-			_.forEach(Game.rooms, room => {
+			for(let roomName in Memory.colonies){
+				let room = Game.rooms[roomName];
 				if (room.terminal && (room.terminal.store[m] || 0) < 2000 && room.terminal.cooldown == 0) {
 					let or = Game.market.getAllOrders(order => 
 							 order.resourceType == m && order.type == ORDER_SELL && order.price < 0.3);
@@ -106,7 +115,7 @@ function zGeneral(){
 						}
 					}
 				}
-			});
+			};
 		});
 	}
 	if(Game.time % 50 == 0){
