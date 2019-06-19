@@ -72,7 +72,7 @@ export class SourceReaperOverlord extends CombatOverlord {
 								lair.id == '59f1a14e82100e1594f38086' ||
 								lair.id == '59f1a0bc82100e1594f3727c' ||
 								lair.id == '59f1a0bc82100e1594f3727b' ||
-								lair.id == '59f1a0af82100e1594f37063' ||
+								//lair.id == '59f1a0af82100e1594f37063' ||
 								lair.id == '59f1a0af82100e1594f37061' ||
 								lair.id == '59f1a0d282100e1594f374d8' ||
 								lair.id == '59f1a0d282100e1594f374d6' ||
