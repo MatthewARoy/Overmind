@@ -100,7 +100,7 @@ function zGeneral(){
 	}
 	if ((Game.time) % 111 == 0) { //
 		let resources = [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, 
-						 RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN];
+						 RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN,RESOURCE_POWER];
 		_.forEach(resources, m => {
 			for(let roomName in Memory.colonies){
 				let room = Game.rooms[roomName];
