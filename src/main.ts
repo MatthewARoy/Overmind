@@ -74,14 +74,31 @@ function powerRoutine(roomName: string){
     }
 }
 function zGeneral(){
+	// note: return this.kite(nearbyHostiles); //KIMZ, change this to flee
+	// replace with flee
+
+	// note: if(['W38N43','W37N43','W38N44'].indexOf(pos.roomName) == -1) {
+	// blocked from reating outpost
 
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
-		if(room && room.my && room.powerSpawn && room.powerSpawn.power > 0){
+		if(room && room.my && room.powerSpawn && room.powerSpawn.power > 0) {
 			room.powerSpawn.processPower();
 		}
 	}
-
+	if(Game.time % 51 == 0){
+		let or = Game.market.getAllOrders(order => order.resourceType == RESOURCE_POWER 
+				&& order.type == ORDER_SELL && order.price < 0.3);
+		for (let roomName in Memory.colonies) {
+			let room = Game.rooms[roomName];
+			if (room.terminal && room.terminal.cooldown == 0) {                    
+				if (or.length > 0) {
+					let r = Game.market.deal(or[0].id, 10000, room.name);
+					if (r == 0) {
+						let x = or.shift();
+						console.log(room.name + " " + x!.amount + " " + (RESOURCE_POWER) + "@ " + x!.price);}}}};
+	}
+	/*
 	if((Game.time + 3800) % 12500 == 0){
 		let x = 0;
 		_.forEach(Game.rooms, room => {
@@ -98,6 +115,7 @@ function zGeneral(){
 			} 
 		});
 	}
+	*/
 	if ((Game.time) % 111 == 0) { //
 		let resources = [RESOURCE_CATALYST, RESOURCE_ZYNTHIUM, RESOURCE_LEMERGIUM, 
 						 RESOURCE_KEANIUM, RESOURCE_UTRIUM, RESOURCE_OXYGEN, RESOURCE_HYDROGEN,RESOURCE_POWER];
@@ -119,7 +137,7 @@ function zGeneral(){
 		});
 	}
 	if(Game.time % 50 == 0){
-    	let rooms = ['W32N45','W32N47','W27N54','W29N52','W33N56','W35N59']; //powerCreep name = roomName
+    	let rooms = ['W32N47','W27N54','W29N52','W33N56','W35N59']; //powerCreep name = roomName //'W32N45',
         rooms.forEach(powerRoutine);
 	}
 	
