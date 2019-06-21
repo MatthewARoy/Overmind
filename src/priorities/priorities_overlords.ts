@@ -28,6 +28,7 @@ export let OverlordPriority = {
 	colonization: { 			// Colonizing new rooms
 		claim  : 400,
 		pioneer: 401,
+		praiser: 402,
 	},
 
 	ownedRoom: { 				// Operation of an owned room

@@ -5,6 +5,7 @@ import {DirectiveColonize} from './colony/colonize';
 import {DirectiveIncubate} from './colony/incubate';
 import {DirectiveOutpost} from './colony/outpost';
 import {DirectiveSKOutpost} from './colony/outpostSK';
+import {DirectivePraiseRoom} from './colony/PraiseRoom';
 import {DirectiveGuard} from './defense/guard';
 import {DirectiveInvasionDefense} from './defense/invasionDefense';
 import {DirectiveOutpostDefense} from './defense/outpostDefense';
@@ -46,6 +47,8 @@ export function DirectiveWrapper(flag: Flag): Directive | undefined {
 					return new DirectiveColonize(flag);
 				case COLOR_ORANGE:
 					return new DirectiveClearRoom(flag);
+				case COLOR_GREEN:
+					return new DirectivePraiseRoom(flag);
 			}
 			break;
 
