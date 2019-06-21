@@ -29,6 +29,7 @@ export class PraisingOverlord extends Overlord {
 			boostWishlist     : [boostResources.upgrade[3], boostResources.move[3]]
 		});
 		this.haulers = this.zerg(Roles.transport);
+		
 		this.pioneers = this.zerg(Roles.pioneer);
 		this.spawnSite = this.room ? _.filter(this.room.constructionSites,
 											  s => s.structureType == STRUCTURE_SPAWN)[0] : undefined;
@@ -42,8 +43,10 @@ export class PraisingOverlord extends Overlord {
 
 	init() {
 		this.wishlist(4, Setups.upgraders.default);
-		this.wishlist(4, Setups.transporters.early);
 		const targetRoom = Game.rooms[this.pos.roomName];
+		if(targetRoom && targetRoom.controller && !targetRoom.terminal) {
+			this.wishlist(4, Setups.transporters.early);
+		}
 		if(targetRoom && targetRoom.constructionSites.length > 0) {
 			this.wishlist(4, Setups.pioneer);
 		}
