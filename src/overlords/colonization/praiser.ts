@@ -42,8 +42,11 @@ export class PraisingOverlord extends Overlord {
 
 	init() {
 		this.wishlist(4, Setups.upgraders.default);
-		this.wishlist(4, Setups.transporters.default);
-		this.wishlist(4, Setups.pioneer);
+		this.wishlist(4, Setups.transporters.early);
+		const targetRoom = Game.rooms[this.pos.roomName];
+		if(targetRoom && targetRoom.constructionSites.length > 0) {
+			this.wishlist(4, Setups.pioneer);
+		}
 	}
 
 	private findStructureBlockingController(pioneer: Zerg): Structure | undefined {
@@ -87,7 +90,7 @@ export class PraisingOverlord extends Overlord {
 		}
 	}
 	private handleHauler(hauler: Zerg) {
-		if (_.sum(hauler.carry) == hauler.carryCapacity) {
+		if (_.sum(hauler.carry) == 0) { // go back to colony to recharge
 			if (!hauler.inSameRoomAs(this.colony)) {
 				hauler.goTo(this.colony);
 				return;
@@ -95,7 +98,7 @@ export class PraisingOverlord extends Overlord {
 			hauler.task = Tasks.recharge();
 			return;
 		} else {
-			if (!hauler.inSameRoomAs(this.directive)) {
+			if (!hauler.inSameRoomAs(this.directive)) { // transport energy to praise new room
 				hauler.goTo(this.directive);
 				return;
 			}
