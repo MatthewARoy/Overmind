@@ -70,7 +70,7 @@ export class DefenseNPCOverlord extends Overlord {
 			if (attackTarget) {
 				this.combatActions(guard, attackTarget);
 			} else {
-				guard.doMedicActions(this.pos.roomName);
+				guard.doMedicActions(this.pos.roomName,this.pos);
 			}
 		}
 	}

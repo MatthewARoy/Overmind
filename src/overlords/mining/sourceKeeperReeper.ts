@@ -192,7 +192,7 @@ export class SourceReaperOverlord extends CombatOverlord {
 			} else {
 				// Do medic actions
 				debug(defender, `Medic actions`);
-				defender.doMedicActions(this.room.name);
+				defender.doMedicActions(this.room.name,this.pos);
 			}
 		}
 
