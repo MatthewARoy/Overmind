@@ -67,12 +67,14 @@ export class PraisingOverlord extends Overlord {
 		}
 	}
 	private handleUpgrader(upgrader: Zerg) {
-		if (!upgrader.inSameRoomAs(this.directive)) {
-			upgrader.goTo(this.directive);
-			return;
-		}
+		// recharge even if in colony room (assuming it got boosted move parts)
 		if (_.sum(upgrader.carry) == 0) {
 			upgrader.task = Tasks.recharge();
+			return;
+		} 
+
+		if (!upgrader.inSameRoomAs(this.directive)) {
+			upgrader.goTo(this.directive);
 			return;
 		} else {
 			const csites = _.filter(this.room!.constructionSites,csite => 
