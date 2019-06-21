@@ -14,7 +14,7 @@ export class DirectivePraiseRoom extends Directive {
 
 	static directiveName = 'incubate';
 	static color = COLOR_PURPLE;
-	static secondaryColor = COLOR_WHITE;
+	static secondaryColor = COLOR_GREEN;
 
 	incubatee: Colony | undefined;
 
