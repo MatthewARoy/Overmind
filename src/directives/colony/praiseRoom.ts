@@ -36,7 +36,7 @@ export class DirectivePraiseRoom extends Directive {
 	}
 
 	init() {
-		this.alert(`PraiseRoom directive active - ${this.colony.name} => ${this.pos.name}`);
+		this.alert(`PraiseRoom directive active - ${this.colony.name} => ${this.pos.roomName}`);
 
 	}
 
