@@ -4,6 +4,7 @@ import {DirectivePraiseRoom} from '../../directives/colony/praiseRoom';
 import {Pathing} from '../../movement/Pathing';
 import {OverlordPriority} from '../../priorities/priorities_overlords';
 import {profile} from '../../profiler/decorator';
+import {boostResources} from '../../resources/map_resources';
 import {Tasks} from '../../tasks/Tasks';
 import {Zerg} from '../../zerg/Zerg';
 import {Overlord} from '../Overlord';
@@ -24,7 +25,9 @@ export class PraisingOverlord extends Overlord {
 	constructor(directive: DirectivePraiseRoom, priority = OverlordPriority.colonization.pioneer) {
 		super(directive, 'praiser', priority);
 		this.directive = directive;
-		this.upgraders = this.zerg(Roles.upgrader);
+		this.upgraders = this.zerg(Roles.upgrader, {
+			boostWishlist     : [boostResources.upgrade[3], boostResources.move[3]]
+		});
 		this.haulers = this.zerg(Roles.transport);
 		this.pioneers = this.zerg(Roles.pioneer);
 		this.spawnSite = this.room ? _.filter(this.room.constructionSites,
