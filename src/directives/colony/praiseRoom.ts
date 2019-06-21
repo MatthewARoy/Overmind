@@ -31,8 +31,10 @@ export class DirectivePraiseRoom extends Directive {
 	spawnMoarOverlords() {
 		if (!this.incubatee) { // colony isn't claimed yet
 			this.overlords.claim = new ClaimingOverlord(this);
-			this.overlords.praise = new PraisingOverlord(this);
 		}
+		if(this.room && this.room.my){
+            this.overlords.praise = new PraisingOverlord(this);
+        }
 	}
 
 	init() {
