@@ -89,7 +89,7 @@ export class CombatZerg extends Zerg {
 		}
 	}
 
-	doMedicActions(roomName: string): void {
+	doMedicActions(roomName: string, regroupPOS?: RoomPosition): void {
 		// Travel to the target room
 		if (!this.safelyInRoom(roomName)) {
 			this.goToRoom(roomName, {ensurePath: true});
@@ -111,7 +111,11 @@ export class CombatZerg extends Zerg {
 				this.rangedHeal(target);
 			}
 		} else {
-			this.park();
+			if (regroupPOS && this.pos.getRangeTo(regroupPOS) > 4) {
+				this.goTo(regroupPOS);
+			} else {
+				this.park();
+			}
 		}
 	}
 

@@ -33,12 +33,12 @@ export class RangedDefenseOverlord extends CombatOverlord {
 	}
 
 	private handleDefender(hydralisk: CombatZerg): void {
-	    if (this.room.hostiles.length > 0) {
-            hydralisk.autoCombat(this.room.name);
-        } else {
-            hydralisk.doMedicActions(this.room.name);
-        }
-    }
+		if (this.room.hostiles.length > 0) {
+			hydralisk.autoCombat(this.room.name);
+		} else {
+			hydralisk.doMedicActions(this.room.name,this.pos);
+		}
+	}
 
 	private computeNeededHydraliskAmount(setup: CreepSetup, boostMultiplier: number): number {
 		const healAmount = CombatIntel.maxHealingByCreeps(this.room.hostiles);
