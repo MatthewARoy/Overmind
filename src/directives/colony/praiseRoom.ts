@@ -13,6 +13,7 @@ export class DirectivePraiseRoom extends Directive {
 	static directiveName = 'incubate';
 	static color = COLOR_PURPLE;
 	static secondaryColor = COLOR_GREEN;
+	static priority = 2000;
 
 	constructor(flag: Flag) {
 		super(flag, colony => colony.level >= 7);
@@ -22,7 +23,7 @@ export class DirectivePraiseRoom extends Directive {
 		if (this.room && !this.room.my) { // colony isn't claimed yet
 			this.overlords.claim = new ClaimingOverlord(this);
 		} else {
-            this.overlords.praise = new PraisingOverlord(this);
+            this.overlords.praise = new PraisingOverlord(this,2000);
         }
 	}
 
