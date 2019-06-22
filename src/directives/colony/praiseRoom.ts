@@ -12,7 +12,7 @@ import { Priority } from 'priorities/priorities';
 @profile
 export class DirectivePraiseRoom extends Directive {
 
-	static directiveName = 'incubate';
+	static directiveName = 'praiseRoom';
 	static color = COLOR_PURPLE;
 	static secondaryColor = COLOR_GREEN;
 
