@@ -19,7 +19,7 @@ export class PraisingOverlord extends Overlord {
 	supporters: Zerg[];
 	upgradeContrainer: StructureContainer | undefined;
 
-	constructor(directive: DirectivePraiseRoom, priority = OverlordPriority.colonization.pioneer) {
+	constructor(directive: DirectivePraiseRoom, priority = OverlordPriority.praiseRoom.praiser) {
 		super(directive, 'praiser', priority);
 		this.directive = directive;
 		this.upgraders = this.zerg(Roles.upgrader, {

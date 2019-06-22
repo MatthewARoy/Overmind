@@ -28,7 +28,6 @@ export let OverlordPriority = {
 	colonization: { 			// Colonizing new rooms
 		claim  : 400,
 		pioneer: 401,
-		praiser: 402,
 	},
 
 	ownedRoom: { 				// Operation of an owned room
@@ -77,5 +76,9 @@ export let OverlordPriority = {
 		haul: 1100
 	},
 
+	praiseRoom: {
+		praiser: 2000
+	},
+	
 	default: 99999				// Default overlord priority to ensure it gets run last
 };
