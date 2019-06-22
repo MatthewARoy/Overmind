@@ -76,6 +76,7 @@ function powerRoutine(roomName: string){
 function zGeneral(){
 	// note: return this.kite(nearbyHostiles); //KIMZ, change this to flee
 	// replace with flee
+	// disabled power processing
 
 	// note: if(['W38N43','W37N43','W38N44'].indexOf(pos.roomName) == -1) {
 	// blocked from reating outpost
@@ -88,12 +89,14 @@ function zGeneral(){
         }
     });
 	*/
+	/*
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
 		if(room && room.my && room.powerSpawn && room.powerSpawn.power > 0) {
 			room.powerSpawn.processPower();
 		}
 	}
+	*/
 	if(Game.time % 51 == 0){
 		let or = Game.market.getAllOrders(order => order.resourceType == RESOURCE_POWER 
 				&& order.type == ORDER_SELL && order.price < 0.3);
@@ -145,7 +148,10 @@ function zGeneral(){
 		});
 	}
 	if(Game.time % 50 == 0){
-    	let rooms = ['W32N47','W27N54','W29N52','W33N56','W35N59']; //powerCreep name = roomName //'W32N45',
+    	let rooms = ['W32N47', 'W27N54', 'W29N52', 'W33N56', 'W35N59','W36N57',
+                     'W35N53','W39N56',
+                     'W37N55','W34N53','W34N47'
+        ]; 
         rooms.forEach(powerRoutine);
 	}
 	
