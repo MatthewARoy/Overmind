@@ -16,6 +16,7 @@ export class PraisingOverlord extends Overlord {
 	directive: DirectivePraiseRoom;
 	upgraders: Zerg[];
 	haulers: Zerg[];
+	supporters: Zerg[];
 	upgradeContrainer: StructureContainer | undefined;
 
 	constructor(directive: DirectivePraiseRoom, priority = OverlordPriority.colonization.pioneer) {
@@ -25,6 +26,7 @@ export class PraisingOverlord extends Overlord {
 			boostWishlist     : [boostResources.upgrade[3], boostResources.move[3]]
 		});
 		this.haulers = this.zerg(Roles.transport);
+		this.supporters = this.zerg(Roles.transport);
 	}
 
 	refresh() {
@@ -41,8 +43,10 @@ export class PraisingOverlord extends Overlord {
 			this.wishlist(4, Setups.upgraders.default);
 			this.wishlist(8, Setups.transporters.early);
 		}
+		if(this.room && this.room.storage) {
+			this.wishlist(1,Setups.transporters.default);
+		}
 	}
-
 	private handleHauler(hauler: Zerg) {
 		if (_.sum(hauler.carry) == 0) { // go back to colony to recharge
 			if (!hauler.inSameRoomAs(this.colony)) {
@@ -67,6 +71,35 @@ export class PraisingOverlord extends Overlord {
 			} else {
 				if(this.pos.isWalkable) {
 					hauler.task = Tasks.drop(this.pos);
+				}
+			}
+		}
+	}
+	private handleSupporters(supporter: Zerg) {
+		if (!supporter.inSameRoomAs(this.directive)) {
+			supporter.goTo(this.directive);
+			return;
+		} 
+		if (_.sum(supporter.carry) < supporter.carryCapacity) { // withdraw from storage/terminal
+			if(this.room && this.room.terminal && this.room.terminal.energy) {
+				supporter.task = Tasks.withdraw(this.room.terminal,RESOURCE_ENERGY);
+				return;
+			}
+			if(this.room && this.room.storage && this.room.storage.energy) {
+				supporter.task = Tasks.withdraw(this.room.storage,RESOURCE_ENERGY);
+				return;
+			}
+			return;
+		} else {
+			if(this.room && this.room.controller && !this.upgradeContrainer) {
+				this.upgradeContrainer = _.first(this.room.controller.pos.findInRange(this.room.containers,3));
+			}
+			if(this.upgradeContrainer) {
+				if(_.sum(this.upgradeContrainer.store) < this.upgradeContrainer.storeCapacity) {
+					supporter.task = Tasks.transferAll(this.upgradeContrainer);
+					return;
+				} else {
+					supporter.task = Tasks.drop(this.upgradeContrainer.pos);
 				}
 			}
 		}
@@ -101,6 +134,7 @@ export class PraisingOverlord extends Overlord {
 	run() {
 		this.autoRun(this.upgraders, upgrader => this.handleUpgrader(upgrader));
 		this.autoRun(this.haulers, hauler => this.handleHauler(hauler));
+		this.autoRun(this.supporters, supporter => this.handleSupporters(supporter));
 	}
 }
 
