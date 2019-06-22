@@ -63,6 +63,10 @@ export class PraisingOverlord extends Overlord {
 			if(transferTarget) {
 				hauler.task = Tasks.transferAll(transferTarget);
 				return;
+			} else {
+				if(this.pos.isWalkable){
+					hauler.task = Tasks.drop(this.pos);
+				}
 			}
 		}
 	}
