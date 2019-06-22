@@ -26,7 +26,7 @@ export class PraisingOverlord extends Overlord {
 			boostWishlist     : [boostResources.upgrade[3], boostResources.move[3]]
 		});
 		this.haulers = this.zerg(Roles.transport);
-		this.supporters = this.zerg(Roles.transport);
+		this.supporters = this.zerg(Roles.queen);
 	}
 
 	refresh() {
@@ -44,7 +44,7 @@ export class PraisingOverlord extends Overlord {
 			this.wishlist(8, Setups.transporters.early);
 		}
 		if(this.room && this.room.storage) {
-			this.wishlist(1,Setups.transporters.default);
+			this.wishlist(1,Setups.queens.default);
 		}
 	}
 	private handleHauler(hauler: Zerg) {
