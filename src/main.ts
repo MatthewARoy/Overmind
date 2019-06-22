@@ -79,7 +79,15 @@ function zGeneral(){
 
 	// note: if(['W38N43','W37N43','W38N44'].indexOf(pos.roomName) == -1) {
 	// blocked from reating outpost
-
+	/* 
+	_.forEach(Game.flags,flag => {
+        let creep = Game.getObjectById(flag.name);
+        if(creep){
+            creep.moveTo(flag);
+            creep.dismantle(_.first(flag.pos.lookFor(LOOK_STRUCTURES)));
+        }
+    });
+	*/
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
 		if(room && room.my && room.powerSpawn && room.powerSpawn.power > 0) {
