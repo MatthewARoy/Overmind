@@ -1,6 +1,7 @@
 import {log} from '../../console/log';
 import {Roles, Setups} from '../../creepSetups/setups';
 import {DirectivePraiseRoom} from '../../directives/colony/praiseRoom';
+import {MoveOptions} from '../../movement/Movement';
 import {Pathing} from '../../movement/Pathing';
 import {OverlordPriority} from '../../priorities/priorities_overlords';
 import {profile} from '../../profiler/decorator';
@@ -20,6 +21,8 @@ export class PraisingOverlord extends Overlord {
 	haulers: Zerg[];
 	upgradeContrainer: StructureContainer | undefined;
 
+	blockRooms: MoveOptions;
+
 	constructor(directive: DirectivePraiseRoom, priority = OverlordPriority.colonization.pioneer) {
 		super(directive, 'praiser', priority);
 		this.directive = directive;
@@ -34,6 +37,7 @@ export class PraisingOverlord extends Overlord {
 	}
 
 	init() {
+		this.blockRooms.obstacles = [new RoomPosition(25,25,'W42N43')];
 		if(this.room && this.room.hostiles.length == 0) {
 			this.wishlist(4, Setups.upgraders.default);
 			if(!this.room.terminal) {
@@ -45,14 +49,14 @@ export class PraisingOverlord extends Overlord {
 	private handleHauler(hauler: Zerg) {
 		if (_.sum(hauler.carry) == 0) { // go back to colony to recharge
 			if (!hauler.inSameRoomAs(this.colony)) {
-				hauler.goTo(this.colony);
+				hauler.goTo(this.colony,this.blockRooms);
 				return;
 			}
 			hauler.task = Tasks.recharge();
 			return;
 		} else {
 			if (!hauler.inSameRoomAs(this.directive)) { // transport energy to praise new room
-				hauler.goTo(this.directive);
+				hauler.goTo(this.directive,this.blockRooms);
 				return;
 			}
 			
@@ -78,7 +82,7 @@ export class PraisingOverlord extends Overlord {
 		} 
 
 		if (!upgrader.inSameRoomAs(this.directive)) {
-			upgrader.goTo(this.directive);
+			upgrader.goTo(this.directive,this.blockRooms);
 			return;
 		} else {
 			const csites = _.filter(this.room!.constructionSites,csite => 
