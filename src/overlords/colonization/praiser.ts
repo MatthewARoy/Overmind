@@ -37,7 +37,7 @@ export class PraisingOverlord extends Overlord {
 	}
 
 	init() {
-		this.blockRooms.obstacles = [new RoomPosition(25,25,'W42N43')];
+		this.blockRooms = {obstacles: [new RoomPosition(25,25,'W42N43')]};
 		if(this.room && this.room.hostiles.length == 0) {
 			this.wishlist(4, Setups.upgraders.default);
 			if(!this.room.terminal) {
