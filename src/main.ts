@@ -74,6 +74,25 @@ function powerRoutine(roomName: string){
     }
 }
 function zGeneral(){
+	/*
+	let ops = 0;
+	let power = 0;
+	let energy = 0;
+	for(let roomName in Memory.colonies){
+		let room = Game.rooms[roomName];
+		if(room && room.my && room.terminal) {
+			ops = ops + (room.terminal.store.ops || 0);
+			power = power + (room.terminal.store.power || 0);
+			energy = energy + (room.terminal.store.energy || 0);
+			if(room.storage) {
+				energy = energy + (room.storage.store.energy || 0);
+			}
+		}
+	}
+	*/
+	console.log('total ops = '+ ops);
+	console.log('total power = '+ power);
+	console.log('total energy = '+ energy);
 	// note: return this.kite(nearbyHostiles); //KIMZ, change this to flee
 	// replace with flee
 	// disabled power processing
