@@ -280,7 +280,7 @@ export class Overseer implements IOverseer {
 			if (bestOutpost) {
 				const pos = Pathing.findPathablePosition(bestOutpost);
 				log.info(`Colony ${colony.room.print} now remote mining from ${pos.print}`);
-				if(['W38N43','W37N43','W38N44','W26N51'].indexOf(pos.roomName) == -1) {
+				if (['W38N43', 'W37N43', 'W38N44','W26N51','W33N44','W32N44'].indexOf(pos.roomName) == -1) {
 					DirectiveOutpost.createIfNotPresent(pos, 'room', {memory: {[_MEM.COLONY]: colony.name}});
 				}
 			}
