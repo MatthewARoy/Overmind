@@ -66,17 +66,14 @@ export class SourceReaperOverlord extends CombatOverlord {
 		if (!this.room) return;
 		// If any lairs have an active keeper, target that
 		const activeLair = _.find(this.room.keeperLairs, //kimz
-								lair => !(lair.id == '59f1a0d282100e1594f374ce' ||
-								lair.id == '59f1a0d082100e1594f3749a' ||
+								lair => !(lair.id == '59f1a0d282100e1594f374ce' || // [room W34N46 pos 36,45]
+								lair.id == '59f1a0d082100e1594f3749a' || // [room W34N56 pos 39,41]
 								lair.id == '59f1a14e82100e1594f3808b' ||
 								lair.id == '59f1a14e82100e1594f38086' ||
 								lair.id == '59f1a0bc82100e1594f3727c' ||
 								lair.id == '59f1a0bc82100e1594f3727b' ||
 								//lair.id == '59f1a0af82100e1594f37063' ||
 								lair.id == '59f1a0af82100e1594f37061' ||
-								lair.id == '59f1a0d282100e1594f374d8' ||
-								lair.id == '59f1a0d282100e1594f374d6' ||
-								lair.id == '59f1a0d282100e1594f374d1' ||
 								lair.id == '59f1a0ae82100e1594f3703d' ||
 								lair.id == '59f1a0ae82100e1594f37039' ||
 								lair.id == '59f1a0ae82100e1594f3703b'

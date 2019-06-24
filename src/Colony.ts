@@ -312,23 +312,17 @@ export class Colony {
 											  source => source.pos.getMultiRoomRangeTo(this.pos)));
 		for (const source of this.sources) {
 			if(!(//kimz
-				source.id == '59f1a0d282100e1594f374cf' ||
-                //source.id == '59f1a0be82100e1594f372af' ||
-                //source.id == '59f1a0be82100e1594f372ae' ||
-                source.id == '59f1a14e82100e1594f3808a' ||
-                source.id == '59f1a14e82100e1594f38088' ||
-                source.id == '59f1a13a82100e1594f37f04' ||
-                source.id == '59f1a13a82100e1594f37f05' ||
-                source.id == '59f1a0bc82100e1594f3727d' ||
-                source.id == '59f1a0bc82100e1594f3727a' ||
-                source.id == '59f1a0af82100e1594f37060' ||
-                source.id == '59f1a0d282100e1594f374d2' ||
-                source.id == '59f1a0d282100e1594f374d5' ||
-                source.id == '59f1a0d282100e1594f374d7' || //
-                source.id == '59f1a0ae82100e1594f37038' || //
-                source.id == '59f1a0ae82100e1594f3703c' || //
-                source.id == '59f1a0ae82100e1594f3703a' || //
-                source.id == '59f1a15d82100e1594f382d0'
+				source.id == '59f1a0d282100e1594f374cf' || // [room W34N46 pos 33,46]
+                source.id == '59f1a14e82100e1594f3808a' || // [room W26N55 pos 8,35]
+                source.id == '59f1a14e82100e1594f38088' || // [room W26N55 pos 16,15]
+                source.id == '59f1a13a82100e1594f37f04' || // unknown
+                source.id == '59f1a13a82100e1594f37f05' || // unknown
+                source.id == '59f1a0bc82100e1594f3727d' || // [room W35N56 pos 3,42]
+                source.id == '59f1a0af82100e1594f37060' || // [room W36N45 pos 5,5]
+                source.id == '59f1a0ae82100e1594f37038' || // [room W36N54 pos 12,7]
+                source.id == '59f1a0ae82100e1594f3703c' || // [room W36N54 pos 17,35]
+                source.id == '59f1a0ae82100e1594f3703a' || // [room W36N54 pos 40,12]
+                source.id == '59f1a15d82100e1594f382d0'    // [room W25N55 pos 32,42]
 				))
 			DirectiveHarvest.createIfNotPresent(source.pos, 'pos');
 		}
@@ -341,12 +335,8 @@ export class Colony {
 				.sortBy(e => e!.pos.getMultiRoomRangeTo(this.pos)).value() as StructureExtractor[]);
 		if (this.controller.level >= 6) {
 			_.forEach(this.extractors, extractor => //kimz
-				!(	extractor.id == '59f1c266a5165f24b259a5b3' || //W34N56
-                	//extractor.id == '59f1c265a5165f24b259a52b' || //W36N45
-                	extractor.id == '59f1c266a5165f24b259a645' || //W25N55!!! extractor
-                	extractor.id == '59f1a15d82100e1594f382d0' //W25N55!!! source
-            //extractor.id == '59f1c266a5165f24b259a5fd'
-              		//extractor.id == '59f1c266a5165f24b259a5fd'
+				!(	extractor.id == '59f1c266a5165f24b259a5b3' || // [room W34N56 pos 36,38]
+                	extractor.id == '59f1c266a5165f24b259a645'    //[room W25N55 pos 42,7]
             ) &&
 				DirectiveExtract.createIfNotPresent(extractor.pos, 'pos'));
 		}
