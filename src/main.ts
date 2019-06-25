@@ -73,7 +73,26 @@ function powerRoutine(roomName: string){
       return;
     }
 }
-function zGeneral(){
+function zGeneral() {
+	/*
+	for(let roomName in Memory.colonies){
+		let room = Game.rooms[roomName];
+		let x = 0;
+		_.forEach(Game.flags,flag => {
+			if(flag.color == COLOR_YELLOW && flag.secondaryColor == COLOR_YELLOW && flag.memory.C == roomName){
+				x++;
+			}
+		});
+		console.log('+++++++++++' + roomName +'+++++++++++' + x);
+	}
+	*/
+	/*
+	for(let roomName in Memory.colonies){
+		let room = Game.rooms[roomName];
+		let mineral = room.mineral!.mineralType;
+		console.log(roomName + ' ' + mineral);
+	}
+	*/
 	/*
 	let ops = 0;
 	let power = 0;
@@ -89,10 +108,11 @@ function zGeneral(){
 			}
 		}
 	}
-	*/
+	
 	console.log('total ops = '+ ops);
 	console.log('total power = '+ power);
 	console.log('total energy = '+ energy);
+	*/
 	// note: return this.kite(nearbyHostiles); //KIMZ, change this to flee
 	// replace with flee
 	// disabled power processing
