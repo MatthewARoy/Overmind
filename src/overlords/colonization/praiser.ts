@@ -126,6 +126,9 @@ export class PraisingOverlord extends Overlord {
 			}
 
 			if(this.room && this.room.controller) {
+				// if(!upgrader.pos.inRangeTo(this.directive,3)) {
+				// upgrader.goTo(this.directive);
+				// }
 				upgrader.task = Tasks.upgrade(this.room.controller);
 				return;
 			}
