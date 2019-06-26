@@ -188,7 +188,7 @@ function zGeneral() {
 	}
 	if(Game.time % 50 == 0){
     	let rooms = ['W32N47', 'W27N54', 'W29N52', 'W33N56', 'W35N59','W36N57',
-                     'W35N53','W39N56',
+                     'W35N53','W37N44',
                      'W37N55','W34N53','W34N47'
         ]; 
         rooms.forEach(powerRoutine);
