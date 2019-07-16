@@ -86,10 +86,19 @@ function zGeneral() {
 		console.log('+++++++++++' + roomName +'+++++++++++' + x);
 	}
 	*/
+	for(let roomName in Memory.colonies){
+		let room = Game.rooms[roomName];
+		_.forEach(Game.flags,flag => {
+			if(flag.color == COLOR_YELLOW && flag.secondaryColor == COLOR_CYAN && flag.memory.C == roomName){
+				console.log('+++++++++++' + roomName +'+++++++++++' + Game.rooms[flag.pos.roomName].mineral.mineralType);
+			}
+		});
+		
+	}
 	/*
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
-		let mineral = room.mineral!.mineralType;
+		let mineral = room.mineral.mineralType;
 		console.log(roomName + ' ' + mineral);
 	}
 	*/

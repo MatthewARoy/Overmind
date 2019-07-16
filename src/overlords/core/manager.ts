@@ -282,11 +282,12 @@ export class CommandCenterOverlord extends Overlord {
 			const powerInTerminal = (this.room.terminal.store[RESOURCE_POWER] || 0);
 			const powerInSpawn = (this.room.powerSpawn.power || 0);
 			const powerInManager = (manager.carry[RESOURCE_POWER] || 0);
-			if(powerInManager > 0 && powerInSpawn == 0) {
-				manager.transfer(this.room.powerSpawn,RESOURCE_POWER);
-			}
-			if(powerInTerminal > 100 && powerInSpawn == 0) {
-				manager.withdraw(this.room.terminal,RESOURCE_POWER,100);
+			if (powerInTerminal > 100 && powerInManager == 0 && powerInSpawn == 0) {
+				if (this.unloadCarry(manager)){
+				  return;
+				}
+				manager.task = Tasks.withdraw(this.room.terminal, RESOURCE_POWER,100);
+				manager.task.parent = Tasks.transfer(this.room.powerSpawn, RESOURCE_POWER);
 			}
 		}
 	}
