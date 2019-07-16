@@ -86,6 +86,7 @@ function zGeneral() {
 		console.log('+++++++++++' + roomName +'+++++++++++' + x);
 	}
 	*/
+	/*
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
 		_.forEach(Game.flags,flag => {
@@ -95,6 +96,7 @@ function zGeneral() {
 		});
 		
 	}
+	*/
 	/*
 	for(let roomName in Memory.colonies){
 		let room = Game.rooms[roomName];
