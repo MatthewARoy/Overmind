@@ -77,7 +77,7 @@ const RANGES = {
 	TRANSFER: 1,
 	WITHDRAW: 1,
 	HARVEST : 1,
-	DROP    : 0,
+	DROP	: 0,
 };
 
 /**
@@ -88,7 +88,7 @@ const RANGES = {
 export class Zerg {
 
 	creep: Creep; 						// The creep that this wrapper class will control
-	body: BodyPartDefinition[];    	 	// These properties are all wrapped from this.creep.* to this.*
+	body: BodyPartDefinition[];		 	// These properties are all wrapped from this.creep.* to this.*
 	carry: StoreDefinition;				// |
 	carryCapacity: number;				// |
 	fatigue: number;					// |
@@ -580,14 +580,19 @@ export class Zerg {
 	 * Execute the task you currently have.
 	 */
 	run(): number | undefined {
-	    //nearbyHostiles
-        if(this.room.hostiles.length > 0 || !(this.getActiveBodyparts(ATTACK) || this.getActiveBodyparts(RANGED_ATTACK) || this.getActiveBodyparts(HEAL))){
-    		let nearbyHostiles = _.filter(this.room.dangerousHostiles, c => this.pos.inRangeToXY(c.pos.x, c.pos.y, 5) &&  c.owner.username != 'Source Keeper');
-            if (nearbyHostiles.length && !this.inRampart && this.room && this.room.controller && !this.room.controller.safeModeCooldown) {
-                //this.say('run!');
-                return this.kite(nearbyHostiles); //KIMZ, change this to flee
-            }
+		/*
+		//nearbyHostiles
+		if(this.room.hostiles.length > 0 || !(this.getActiveBodyparts(ATTACK) || 
+			this.getActiveBodyparts(RANGED_ATTACK) || this.getActiveBodyparts(HEAL))){
+			let nearbyHostiles = _.filter(this.room.dangerousHostiles, c => 
+				this.pos.inRangeToXY(c.pos.x, c.pos.y, 5) &&  c.owner.username != 'Source Keeper');
+			if (nearbyHostiles.length && !this.inRampart && this.room && this.room.controller && 
+				!this.room.controller.safeModeCooldown) {
+				//this.say('run!');
+				return this.kite(nearbyHostiles); // KIMZ, change this to flee
+			}
 		}
+		*/
 		if (this.task) {
 			return this.task.run();
 		}
@@ -669,8 +674,8 @@ export class Zerg {
 	 * Flee from hostiles in the room, while not repathing every tick
 	 */
 	flee(avoidGoals: (RoomPosition | HasPos)[] = this.room.fleeDefaults,
-		 fleeOptions: FleeOptions              = {},
-		 moveOptions: MoveOptions              = {}): boolean {
+		 fleeOptions: FleeOptions			  = {},
+		 moveOptions: MoveOptions			  = {}): boolean {
 		if (avoidGoals.length == 0) {
 			return false;
 		} else if (this.room.controller && this.room.controller.my && this.room.controller.safeMode) {

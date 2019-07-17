@@ -277,13 +277,13 @@ export class CommandCenterOverlord extends Overlord {
 		// Move energy between storage and terminal if needed
 		this.equalizeStorageAndTerminal(manager);
 
-		//kimz
+		// kimz
 		if(this.room && this.room.terminal && this.room.powerSpawn) {
 			const powerInTerminal = (this.room.terminal.store[RESOURCE_POWER] || 0);
 			const powerInSpawn = (this.room.powerSpawn.power || 0);
 			const powerInManager = (manager.carry[RESOURCE_POWER] || 0);
 			if (powerInTerminal > 100 && powerInManager == 0 && powerInSpawn == 0) {
-				if (this.unloadCarry(manager)){
+				if (this.unloadCarry(manager)) {
 				  return;
 				}
 				manager.task = Tasks.withdraw(this.room.terminal, RESOURCE_POWER,100);
