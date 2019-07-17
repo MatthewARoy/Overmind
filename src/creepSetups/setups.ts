@@ -208,9 +208,9 @@ export const CombatSetups = {
 			sizeLimit: Infinity,
 		}),
 
-		boosted_T3: new CreepSetup(Roles.melee, {
-			pattern: [TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE],//kimz
-			//pattern  : [TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE],
+		boosted_T3: new CreepSetup(Roles.melee, { // tweak: +1 Tough -1 Attack
+			pattern: [TOUGH, TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE],
+			// pattern  : [TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE],
 			sizeLimit: Infinity,
 		}),
 
@@ -231,17 +231,17 @@ export const CombatSetups = {
 			sizeLimit: Infinity,
 		}),
 
-		default: new CreepSetup(Roles.ranged, {
-			pattern: [RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL, HEAL], //kimz
-			//pattern  : [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL],
+		default: new CreepSetup(Roles.ranged, { // Tweak: -1 Ranged +1 Heal
+			pattern: [RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL, HEAL],
+			// pattern  : [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL],
 			sizeLimit: Infinity,
 		}),
 
-		boosted_T3: new CreepSetup(Roles.ranged, {
+		boosted_T3: new CreepSetup(Roles.ranged, { // Tweak: -1 TOUGH, +1 HEAL
 			pattern: [TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
-                MOVE, MOVE, HEAL, HEAL],//kimz
-			//pattern  : [TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
-			//			MOVE, MOVE, HEAL],
+				MOVE, MOVE, HEAL, HEAL],
+			// pattern  : [TOUGH, TOUGH, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK,
+			// MOVE, MOVE, HEAL],
 			sizeLimit: Infinity,
 		}),
 
