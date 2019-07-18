@@ -170,7 +170,6 @@ export class BarrierPlanner {
 		let count = RoomPlanner.settings.maxSitesPerColony - this.colony.constructionSites.length;
 		for (const pos of bunkerPositions) {
 			if (count > 0 && !pos.lookForStructure(STRUCTURE_RAMPART)
-				&& pos.lookFor(LOOK_TERRAIN)[0] != 'wall'
 				&& pos.lookFor(LOOK_CONSTRUCTION_SITES).length == 0) {
 				const ret = pos.createConstructionSite(STRUCTURE_RAMPART);
 				if (ret != OK) {
