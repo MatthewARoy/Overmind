@@ -34,7 +34,7 @@ interface Memory {
 		verbosity?: number;
 		workerIndex?: number;
 	};
-
+	allies: ['zGeneral','Muon','Davaned'];
 	[otherProperty: string]: any;
 }
 
