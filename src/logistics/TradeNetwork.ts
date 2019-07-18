@@ -50,15 +50,15 @@ const TraderStatsDefaults: TraderStats = {
 // Maximum prices I'm willing to pay to buy various resources - based on shard2 market data in June 2018
 // (might not always be up to date)
 export const maxMarketPrices: { [resourceType: string]: number } = {
-	default             : 5.0,
-	[RESOURCE_HYDROGEN] : 0.3,
-	[RESOURCE_OXYGEN]   : 0.25,
-	[RESOURCE_UTRIUM]   : 0.3,
-	[RESOURCE_LEMERGIUM]: 0.25,
-	[RESOURCE_KEANIUM]  : 0.25,
-	[RESOURCE_ZYNTHIUM] : 0.25,
-	[RESOURCE_CATALYST] : 0.5,
-	[RESOURCE_ENERGY]   : 0.025,
+	default             : 1.0,
+	[RESOURCE_HYDROGEN] : 0.10,
+	[RESOURCE_OXYGEN]   : 0.10,
+	[RESOURCE_UTRIUM]   : 0.035,
+	[RESOURCE_LEMERGIUM]: 0.15,
+	[RESOURCE_KEANIUM]  : 0.02,
+	[RESOURCE_ZYNTHIUM] : 0.02,
+	[RESOURCE_CATALYST] : 0.25,
+	[RESOURCE_ENERGY]   : 0.020,
 };
 
 export const MAX_ENERGY_SELL_ORDERS = 0;
@@ -77,9 +77,9 @@ export class TraderJoe implements ITradeNetwork {
 			timeout: 25,
 		},
 		market: {
-			reserveCredits: 7000000,	// Always try to stay above this amount
-			boostCredits  : 7000000,	// You can buy boosts directly off market while above this amount
-			energyCredits : 7000000, 	// Can buy energy off market if above this amount
+			reserveCredits: Infinity,	// Always try to stay above this amount
+			boostCredits  : Infinity,	// You can buy boosts directly off market while above this amount
+			energyCredits : Infinity, 	// Can buy energy off market if above this amount
 			orders        : {
 				timeout      : 100000,	// Remove orders after this many ticks if remaining amount < cleanupAmount
 				cleanupAmount: 10,		// RemainingAmount threshold to remove expiring orders
