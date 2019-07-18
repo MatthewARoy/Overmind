@@ -58,10 +58,10 @@ export const maxMarketPrices: { [resourceType: string]: number } = {
 	[RESOURCE_KEANIUM]  : 0.25,
 	[RESOURCE_ZYNTHIUM] : 0.25,
 	[RESOURCE_CATALYST] : 0.5,
-	[RESOURCE_ENERGY]   : 0.025,
+	[RESOURCE_ENERGY]   : 0.05,
 };
 
-export const MAX_ENERGY_SELL_ORDERS = 0;
+export const MAX_ENERGY_SELL_ORDERS = 5;
 export const MAX_ENERGY_BUY_ORDERS = 5;
 
 
@@ -77,9 +77,9 @@ export class TraderJoe implements ITradeNetwork {
 			timeout: 25,
 		},
 		market: {
-			reserveCredits: 7000000,	// Always try to stay above this amount
-			boostCredits  : 7000000,	// You can buy boosts directly off market while above this amount
-			energyCredits : 7000000, 	// Can buy energy off market if above this amount
+			reserveCredits: 10000,	// Always try to stay above this amount
+			boostCredits  : 25000,	// You can buy boosts directly off market while above this amount
+			energyCredits : 50000, 	// Can buy energy off market if above this amount
 			orders        : {
 				timeout      : 100000,	// Remove orders after this many ticks if remaining amount < cleanupAmount
 				cleanupAmount: 10,		// RemainingAmount threshold to remove expiring orders
