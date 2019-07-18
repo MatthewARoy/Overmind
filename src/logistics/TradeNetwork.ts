@@ -79,7 +79,7 @@ export class TraderJoe implements ITradeNetwork {
 		market: {
 			reserveCredits: 10000,	// Always try to stay above this amount
 			boostCredits  : 25000,	// You can buy boosts directly off market while above this amount
-			energyCredits : 50000,
+			energyCredits : 50000, 	// Can buy energy off market if above this amount
 			orders        : {
 				timeout      : 100000,	// Remove orders after this many ticks if remaining amount < cleanupAmount
 				cleanupAmount: 10,		// RemainingAmount threshold to remove expiring orders
