@@ -286,7 +286,6 @@ export class CommandCenterOverlord extends Overlord {
 		}
 		// Move energy between storage and terminal if needed
 		this.equalizeStorageAndTerminal(manager);
-
 	}
 
 	/**
