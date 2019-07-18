@@ -199,6 +199,7 @@ export class Mem {
 			operationMode: DEFAULT_OPERATION_MODE,
 			log          : {},
 			enableVisuals: true,
+			resourcesBlackList: ['XGH2O'],
 		});
 		if (!Memory.stats) {
 			Memory.stats = {};

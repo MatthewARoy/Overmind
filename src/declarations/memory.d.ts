@@ -21,6 +21,7 @@ interface Memory {
 		operationMode: operationMode;
 		log: LoggerMemory;
 		enableVisuals: boolean;
+		resourcesBlackList: [String]; //resources black listed from buying of market
 	};
 	profiler?: any;
 	stats: any;
