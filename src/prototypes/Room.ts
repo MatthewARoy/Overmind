@@ -65,7 +65,7 @@ Object.defineProperty(Room.prototype, 'creeps', {
 Object.defineProperty(Room.prototype, 'hostiles', {
 	get() {
 		if (!this._hostiles) {
-			this._hostiles = this.find(FIND_HOSTILE_CREEPS, { filter: (creep: Creep) => ['JAKwins','zGeneral','Davaned','Muon'].indexOf(creep.owner.username) == -1});//kimz
+			this._hostiles = this.find(FIND_HOSTILE_CREEPS);
 		}
 		return this._hostiles;
 	},
@@ -169,12 +169,8 @@ Object.defineProperty(Room.prototype, 'structures', {
 // Hostile structures currently in the room
 Object.defineProperty(Room.prototype, 'hostileStructures', {
 	get() {
-		if(this.controller && this.controller.owener && this.room.controller.owener){ //kimz
-			if(['JAKwins','Muon','Davaned'].indexOf(this.room.controller.owener.username) >= 0)
-				this._hostileStructures = [];
-		} 
 		if (!this._hostileStructures) {
-			this._hostileStructures = this.find(FIND_HOSTILE_STRUCTURES, {filter: (s: Structure) => (s.hitsMax) });
+			this._hostileStructures = this.find(FIND_HOSTILE_STRUCTURES, {filter: (s: Structure) => s.hitsMax});
 		}
 		return this._hostileStructures;
 	},

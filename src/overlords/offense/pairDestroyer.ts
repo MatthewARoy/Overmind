@@ -121,7 +121,7 @@ export class PairDestroyerOverlord extends Overlord {
 		}
 		// Case 2: you have an attacker partner
 		else {
-			if (attacker.hitsMax - attacker.hits >= healer.hitsMax - healer.hits) {
+			if (attacker.hitsMax - attacker.hits > healer.hitsMax - healer.hits) {
 				healer.heal(attacker);
 			} else {
 				healer.heal(healer);
