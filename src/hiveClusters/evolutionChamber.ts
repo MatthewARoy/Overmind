@@ -409,7 +409,7 @@ export class EvolutionChamber extends HiveCluster {
 		for (const resourceType in this.neededBoosts) {
 			const needAmount = Math.max(this.neededBoosts[resourceType] - (this.colony.assets[resourceType] || 0), 0);
 			if (needAmount > 0) {
-				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(resourceType) == -1);
+				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(<ResourceConstant>resourceType) == -1);
 				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType,
 													 needAmount, allowBuy, 0);
 			}
@@ -422,7 +422,7 @@ export class EvolutionChamber extends HiveCluster {
 		const missingBasicMinerals = this.colony.abathur.getMissingBasicMinerals(queue);
 		for (const resourceType in missingBasicMinerals) {
 			if (missingBasicMinerals[resourceType] > 0) {
-				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(resourceType) == -1);
+				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(<ResourceConstant>resourceType) == -1);
 				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType,
 													 missingBasicMinerals[resourceType], allowBuy);
 			}
