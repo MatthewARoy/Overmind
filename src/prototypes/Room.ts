@@ -65,8 +65,9 @@ Object.defineProperty(Room.prototype, 'creeps', {
 Object.defineProperty(Room.prototype, 'hostiles', {
 	get() {
 		if (!this._hostiles) {
+			const allies = Memory.settings.allies;
 			this._hostiles = this.find(FIND_HOSTILE_CREEPS, { filter: (creep: Creep) => 
-				['zGeneral','Davaned','Muon'].indexOf(creep.owner.username) == -1});
+				allies.indexOf(creep.owner.username) == -1});
 		}
 		return this._hostiles;
 	},
@@ -171,8 +172,9 @@ Object.defineProperty(Room.prototype, 'structures', {
 Object.defineProperty(Room.prototype, 'hostileStructures', {
 	get() {
 		if (!this._hostileStructures) {
+			const allies = Memory.settings.allies;
 			this._hostileStructures = this.find(FIND_HOSTILE_STRUCTURES, {filter: (s: Structure) => 
-				(s.hitsMax) && (['zGeneral','Muon','Davaned'].indexOf(_.get(s, ['owner', 'username'])) == -1) });
+				(s.hitsMax) && (allies.indexOf(_.get(s, ['owner', 'username'])) == -1) });
 		}
 		return this._hostileStructures;
 	},

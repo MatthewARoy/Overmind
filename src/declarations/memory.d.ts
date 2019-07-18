@@ -21,6 +21,7 @@ interface Memory {
 		operationMode: operationMode;
 		log: LoggerMemory;
 		enableVisuals: boolean;
+		allies: [string];
 	};
 	profiler?: any;
 	stats: any;
@@ -34,7 +35,6 @@ interface Memory {
 		verbosity?: number;
 		workerIndex?: number;
 	};
-	allies: ['zGeneral','Muon','Davaned'];
 	[otherProperty: string]: any;
 }
 
