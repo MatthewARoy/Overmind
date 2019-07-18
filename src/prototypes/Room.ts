@@ -172,7 +172,7 @@ Object.defineProperty(Room.prototype, 'hostileStructures', {
 	get() {
 		if (!this._hostileStructures) {
 			this._hostileStructures = this.find(FIND_HOSTILE_STRUCTURES, {filter: (s: Structure) => 
-				(s.hitsMax) && (['zGeneral','Muon','Davaned'].indexOf(_.get(this, ['controller', 'owner', 'username'])) == -1) });
+				(s.hitsMax) && (['zGeneral','Muon','Davaned'].indexOf(_.get(s, ['owner', 'username'])) == -1) });
 		}
 		return this._hostileStructures;
 	},
