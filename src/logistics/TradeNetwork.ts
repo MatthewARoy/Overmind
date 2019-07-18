@@ -61,7 +61,7 @@ export const maxMarketPrices: { [resourceType: string]: number } = {
 	[RESOURCE_ENERGY]   : 0.020,
 };
 
-export const MAX_ENERGY_SELL_ORDERS = 0;
+export const MAX_ENERGY_SELL_ORDERS = 5;
 export const MAX_ENERGY_BUY_ORDERS = 5;
 
 
