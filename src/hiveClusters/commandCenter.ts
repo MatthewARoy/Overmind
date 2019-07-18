@@ -42,6 +42,7 @@ export class CommandCenter extends HiveCluster {
 		enableIdleObservation: true,
 		linksTransmitAt      : LINK_CAPACITY - 100,
 		refillTowersBelow    : 750,
+		processPowerThreshold: 250000, // do not process power if storage is less than this
 	};
 
 	constructor(colony: Colony, storage: StructureStorage) {
@@ -136,9 +137,9 @@ export class CommandCenter extends HiveCluster {
 		}
 		// Refill power spawn
 		if (this.powerSpawn) {
-			if (this.powerSpawn.energy < 50) {
+			if (this.powerSpawn.energy < 500) {
 				this.transportRequests.requestInput(this.powerSpawn, Priority.NormalLow);
-			} else if (this.powerSpawn.power == 0) {
+			} else if (this.powerSpawn.power < 10) {
 				this.transportRequests.requestInput(this.powerSpawn, Priority.Low, {resourceType: RESOURCE_POWER});
 			}		
 		}
@@ -180,6 +181,13 @@ export class CommandCenter extends HiveCluster {
 		}
 	}
 
+	private processPower(): void {
+		if(this.storage && this.storage.energy > CommandCenter.settings.processPowerThreshold &&
+			this.powerSpawn && this.powerSpawn.power > 0 && this.powerSpawn.energy >= 50) {
+			this.powerSpawn.processPower();
+		}
+	}
+
 	// Initialization and operation ====================================================================================
 
 	init(): void {
@@ -189,6 +197,7 @@ export class CommandCenter extends HiveCluster {
 
 	run(): void {
 		this.runObserver();
+		this.processPower();
 	}
 
 	visuals(coord: Coord): Coord {

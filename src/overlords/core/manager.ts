@@ -196,9 +196,19 @@ export class CommandCenterOverlord extends Overlord {
 			return false;
 		}
 		// Move all non-energy resources from storage to terminal
+		for (const resourceType in terminal.store) {
+			if (resourceType != RESOURCE_ENERGY && terminal.store[<ResourceConstant>resourceType]! > 3800 && 
+				resourceType.length == 5) {
+				if (this.unloadCarry(manager))	return true;
+				manager.task = Tasks.withdraw(terminal, <ResourceConstant>resourceType);
+				manager.task.parent = Tasks.transfer(storage, <ResourceConstant>resourceType);
+				return true;
+			}
+		}
 		for (const resourceType in storage.store) {
-			if (resourceType != RESOURCE_ENERGY && storage.store[<ResourceConstant>resourceType]! > 0) {
-				if (this.unloadCarry(manager)) return true;
+			if (resourceType != RESOURCE_ENERGY && storage.store[<ResourceConstant>resourceType]! > 0 && 
+				(terminal.store[<ResourceConstant>resourceType]! < 3000 || resourceType.length != 5)) {
+				if (this.unloadCarry(manager))	return true;
 				manager.task = Tasks.withdraw(storage, <ResourceConstant>resourceType);
 				manager.task.parent = Tasks.transfer(terminal, <ResourceConstant>resourceType);
 				return true;
@@ -277,19 +287,6 @@ export class CommandCenterOverlord extends Overlord {
 		// Move energy between storage and terminal if needed
 		this.equalizeStorageAndTerminal(manager);
 
-		// kimz
-		if(this.room && this.room.terminal && this.room.powerSpawn) {
-			const powerInTerminal = (this.room.terminal.store[RESOURCE_POWER] || 0);
-			const powerInSpawn = (this.room.powerSpawn.power || 0);
-			const powerInManager = (manager.carry[RESOURCE_POWER] || 0);
-			if (powerInTerminal > 100 && powerInManager == 0 && powerInSpawn == 0) {
-				if (this.unloadCarry(manager)) {
-				  return;
-				}
-				manager.task = Tasks.withdraw(this.room.terminal, RESOURCE_POWER,100);
-				manager.task.parent = Tasks.transfer(this.room.powerSpawn, RESOURCE_POWER);
-			}
-		}
 	}
 
 	/**
