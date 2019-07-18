@@ -245,7 +245,8 @@ export class Overseer implements IOverseer {
 			const alreadyOwned = RoomIntel.roomOwnedBy(roomName);
 			const alreadyReserved = RoomIntel.roomReservedBy(roomName);
 			const disregardReservations = !onPublicServer() || MY_USERNAME == MUON;
-			if (alreadyOwned || (alreadyReserved && !disregardReservations)) {
+			const isBlocked = Game.flags[roomName+'-Blocked'] != null;
+			if (alreadyOwned || (alreadyReserved && !disregardReservations) || isBlocked) {
 				return false;
 			}
 			const neighboringRooms = _.values(Game.map.describeExits(roomName)) as string[];
@@ -280,9 +281,7 @@ export class Overseer implements IOverseer {
 			if (bestOutpost) {
 				const pos = Pathing.findPathablePosition(bestOutpost);
 				log.info(`Colony ${colony.room.print} now remote mining from ${pos.print}`);
-				if (['W38N43', 'W37N43', 'W38N44','W26N51','W33N44','W32N44'].indexOf(pos.roomName) == -1) {
-					DirectiveOutpost.createIfNotPresent(pos, 'room', {memory: {[_MEM.COLONY]: colony.name}});
-				}
+				DirectiveOutpost.createIfNotPresent(pos, 'room', {memory: {[_MEM.COLONY]: colony.name}});
 			}
 		}
 	}
