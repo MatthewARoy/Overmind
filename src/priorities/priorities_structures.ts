@@ -50,6 +50,7 @@ export const AttackStructurePriorities: BuildableStructureConstant[] = [
 	STRUCTURE_TERMINAL,
 	STRUCTURE_RAMPART,
 	STRUCTURE_WALL,
+	STRUCTURE_INVADER_CORE,
 ];
 
 export const AttackStructureScores = _.zipObject(_.map(AttackStructurePriorities, type =>

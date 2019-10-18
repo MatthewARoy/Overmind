@@ -5,6 +5,7 @@ import {bodyCost, CreepSetup} from '../../creepSetups/CreepSetup';
 import {Roles, Setups} from '../../creepSetups/setups';
 import {DirectiveOutpost} from '../../directives/colony/outpost';
 import {DirectiveHarvest} from '../../directives/resource/harvest';
+import {CombatTargeting} from '../../targeting/CombatTargeting';
 import {Pathing} from '../../movement/Pathing';
 import {OverlordPriority} from '../../priorities/priorities_overlords';
 import {profile} from '../../profiler/decorator';
@@ -73,7 +74,8 @@ export class MiningOverlord extends Overlord {
 		// Decide operating mode
 		if (Cartographer.roomType(this.pos.roomName) == ROOMTYPE_SOURCEKEEPER) {
 			this.mode = 'SK';
-			this.setup = Setups.drones.miners.sourceKeeper;
+			// this.setup = Setups.drones.miners.sourceKeeper;
+			this.setup = Setups.drones.miners.sourceKeeperHeal;
 		} else if (this.colony.room.energyCapacityAvailable < StandardMinerSetupCost) {
 			this.mode = 'early';
 			this.setup = Setups.drones.miners.default;
@@ -87,7 +89,8 @@ export class MiningOverlord extends Overlord {
 			this.setup = Setups.drones.miners.linkOptimized;
 		} else {
 			this.mode = 'standard';
-			this.setup = Game.cpu.bucket < 9500 ? Setups.drones.miners.standardCPU : Setups.drones.miners.standard;
+			// this.setup = Game.cpu.bucket < 9500 ? Setups.drones.miners.standardCPU : Setups.drones.miners.standard;
+			this.setup = Setups.drones.miners.standardCPU;
 			// todo: double miner condition
 		}
 		const miningPowerEach = this.setup.getBodyPotential(WORK, this.colony);
@@ -243,7 +246,7 @@ export class MiningOverlord extends Overlord {
 	private registerEnergyRequests(): void {
 		if (this.container) {
 			const transportCapacity = 200 * this.colony.level;
-			const threshold = this.colony.stage > ColonyStage.Larva ? 0.8 : 0.5;
+			const threshold = this.colony.stage > ColonyStage.Larva ? 0.65 : 0.5; // zGeneral: from 0.8 to 0.65
 			if (_.sum(this.container.store) > threshold * transportCapacity) {
 				this.colony.logisticsNetwork.requestOutput(this.container, {
 					resourceType: 'all',
@@ -261,6 +264,12 @@ export class MiningOverlord extends Overlord {
 	}
 
 	init() {
+		if (this.room && !this.room.my && 
+			(this.room.invaders.length == 4 || 
+			 this.room.dangerousPlayerHostiles.length > 0 || 
+			 this.room.hostileStructures.filter(s => s.structureType as any === 'invaderCore').length > 0)) {
+			return;
+		}
 		this.wishlist(this.minersNeeded, this.setup);
 		this.registerEnergyRequests();
 	}
@@ -336,15 +345,17 @@ export class MiningOverlord extends Overlord {
 	 * Actions for handling link mining
 	 */
 	private linkMiningActions(miner: Zerg) {
-
+		// Approach mining site
+		if (this.goToMiningSite(miner)) {
+			return;
+		}
 		// Link mining
 		if (this.link) {
-			const res = miner.harvest(this.source!);
-			if (res == ERR_NOT_IN_RANGE) {
-				// Approach mining site
-				if (this.goToMiningSite(miner)) return;
+			if(this.link.energy < this.link.energyCapacity || 
+				(this.source!.energy/this.source!.ticksToRegeneration > miner.getActiveBodyparts(WORK)*1.8)) {
+				miner.harvest(this.source!);
 			}
-			if (miner.carry.energy > 0.9 * miner.carryCapacity) {
+			if (miner.carry.energy > 0.8 * miner.carryCapacity) {
 				miner.transfer(this.link, RESOURCE_ENERGY);
 			}
 			return;
@@ -366,7 +377,8 @@ export class MiningOverlord extends Overlord {
 			if (this.container.hits < this.container.hitsMax
 				&& miner.carry.energy >= Math.min(miner.carryCapacity, REPAIR_POWER * miner.getActiveBodyparts(WORK))) {
 				return miner.repair(this.container);
-			} else {
+			} else if(this.container.store[RESOURCE_ENERGY] < this.container.storeCapacity || 
+					 (this.source!.energy/this.source!.ticksToRegeneration > miner.getActiveBodyparts(WORK)*1.8)) {
 				return miner.harvest(this.source!);
 			}
 		}
@@ -475,6 +487,25 @@ export class MiningOverlord extends Overlord {
 	}
 
 	private handleMiner(miner: Zerg) {
+		if(miner.getActiveBodyparts(HEAL) > 0){
+			if(miner.hits < miner.hitsMax){
+				miner.heal(miner);
+			} else {
+				const target = CombatTargeting.findClosestHurtFriendly(miner);
+				if (target) {
+					// Approach the target
+					const range = miner.pos.getRangeTo(target);
+					// Heal or ranged-heal the target
+					if (range <= 1) {
+						miner.heal(target);
+					}
+					else if (range <= 3) {
+						miner.rangedHeal(target);
+					}
+				}
+
+			}
+		}
 		// Flee hostiles
 		if (miner.flee(miner.room.fleeDefaults, {dropEnergy: true})) {
 			return;

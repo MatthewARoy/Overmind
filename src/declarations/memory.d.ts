@@ -29,6 +29,7 @@ interface Memory {
 		log: LoggerMemory;
 		enableVisuals: boolean;
 		allies: string[];
+		autoAttack: boolean;
 		resourceCollectionMode: resourceCollectionMode;
 		powerCollection: {
 			enabled: boolean;

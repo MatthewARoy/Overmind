@@ -208,8 +208,10 @@ export class Mem {
 			operationMode: DEFAULT_OPERATION_MODE,
 			log          : {},
 			enableVisuals: true,
+			resourcesBlackList: ['XGH2O'],
 			resourceCollectionMode: 0,
 			allies: [MY_USERNAME],
+			autoAttack: false,
 			powerCollection: {
 				enabled: false,
 				maxRange: 5,

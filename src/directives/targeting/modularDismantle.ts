@@ -53,7 +53,7 @@ export class DirectiveModularDismantle extends Directive {
 					return structure;
 				}
 			}
-			if (structure.structureType.toString() == 'invaderCore') {
+			if (structure.structureType as any === 'invaderCore') {
 				this.memory.attackInsteadOfDismantle = true;
 				return structure;
 			}

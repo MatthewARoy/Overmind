@@ -62,7 +62,7 @@ export class ExtractorOverlord extends Overlord {
 
 	private registerOutputRequests(): void {
 		if (this.container) {
-			if (_.sum(this.container.store) > 0.5 * this.container.storeCapacity ||
+			if (_.sum(this.container.store) > 0.25 * this.container.storeCapacity || // changed from 0.5 to 0.25
 				(_.sum(this.container.store) > 0 && this.drones.length == 0)) {
 				this.colony.logisticsNetwork.requestOutput(this.container, {resourceType: 'all'});
 			}
@@ -106,17 +106,42 @@ export class ExtractorOverlord extends Overlord {
 	}
 
 	init() {
+		if (this.room && !this.room.my && 
+			(this.room.invaders.length == 4 || 
+			 this.room.dangerousPlayerHostiles.length > 0 || 
+			 this.room.hostileStructures.filter(s => s.structureType as any === 'invaderCore').length > 0)) {
+			return;
+		}
 		const amount = this.mineral && this.mineral.mineralAmount > 0 ? this.mineral.pos.availableNeighbors().length : 0;
 		this.wishlist(Math.min(amount, ExtractorOverlord.settings.maxDrones), Setups.drones.extractor);
 		this.registerOutputRequests();
-
-		// if(Cartographer.roomType(this.pos.roomName) == ROOMTYPE_SOURCEKEEPER || Cartographer.roomType(this.pos.roomName) == ROOMTYPE_CORE){
-		// 	this.container && console.log(printRoomName(this.pos.roomName)  + ' ' + this.pos + ' ' + this.container + ' ' + this.container.hits*100/this.container.hitsMax);
-		// 	!this.container && console.log(printRoomName(this.pos.roomName) + ' NO CONTAINER');
-		// }
 	}
 
 	private handleDrone(drone: Zerg): void {
+		// fix: Build container
+		if (drone.room == this.room && !this.container) {
+			const containerCsites = _.filter(this.room.constructionSites, csite => csite.structureType == STRUCTURE_CONTAINER);
+			const containerCsite = this.pos.findClosestByLimitedRange(containerCsites, 1);
+			if (containerCsite && _.sum(drone.carry) == 0) {
+				drone.task = Tasks.recharge();
+				return;
+			}
+			if (containerCsite && drone.carry.energy > 0) {
+				drone.task = Tasks.build(containerCsite);
+				return;
+			}
+		}
+		// fix: repair container
+		if (drone.room == this.room && this.container && this.container.hits / this.container.hitsMax < 0.5) {
+			if (_.sum(drone.carry) == 0) {
+				drone.task = Tasks.recharge();
+				return;
+			}
+			if (drone.carry.energy > 0) {
+				drone.task = Tasks.repair(this.container);
+				return;
+			}
+		}
 		// Ensure you are in the assigned room
 		if (drone.room == this.room && !drone.pos.isEdge) {
 			if (_.sum(drone.carry) == 0) {

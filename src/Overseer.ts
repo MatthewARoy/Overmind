@@ -12,6 +12,7 @@ import {DirectivePoisonRoom} from './directives/offense/poisonRoom';
 import {Directive} from './directives/Directive';
 import {Notifier} from './directives/Notifier';
 import {DirectiveBootstrap} from './directives/situational/bootstrap';
+import {DirectiveDismantle} from './directives/targeting/dismantle';
 import {DirectiveNukeResponse} from './directives/situational/nukeResponse';
 import {DirectiveTerminalEvacuateState} from './directives/terminalState/terminalState_evacuate';
 import {RoomIntel} from './intel/RoomIntel';
@@ -203,10 +204,18 @@ export class Overseer implements IOverseer {
 				}
 			}
 			if (Game.time % 55 == 0) {
-				let cores = room.hostileStructures.filter(s => s.structureType.toString() == 'invaderCore');
-				if (cores.length > 0) {
+				let cores = room.hostileStructures.filter(s => s.structureType as any === 'invaderCore');
+				if (cores.length > 0 && <number>_.get(cores[0],['level']) == 0) {
 					log.alert(`Found core in ${room.name} with ${cores[0]}`);
 					let res = DirectiveModularDismantle.createIfNotPresent(cores[0].pos, 'pos');
+					DirectiveDismantle.createIfNotPresent(cores[0].pos, 'pos');
+					if (!!res) {
+						log.notify(`Creating stronghold clearing dismantle in room ${room.name}`);
+					}
+				} else if (cores.length > 0 && <number>_.get(cores[0],['level']) < 3) {
+					log.alert(`Found core in ${room.name} with ${cores[0]}`);
+					let res = DirectivePairDestroy.createIfNotPresent(cores[0].pos, 'pos', {name: ('pairDestroy:' + room.name)});
+					DirectiveDismantle.createIfNotPresent(cores[0].pos, 'pos');
 					if (!!res) {
 						log.notify(`Creating stronghold clearing dismantle in room ${room.name}`);
 					}

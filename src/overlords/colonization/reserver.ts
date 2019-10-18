@@ -26,10 +26,16 @@ export class ReservingOverlord extends Overlord {
 	}
 
 	init() {
+		if(this.room && this.room.hostileStructures.filter(s => s.structureType as any === 'invaderCore').length > 0) {
+			// wait for it to be destroyed
+			return;
+		}
 		let amount = 0;
-		if (this.room) {
-			if (this.room.controller!.needsReserving(this.reserveBuffer)) {
+		if (this.room && this.room.controller) {
+			if (this.room.controller.needsReserving(this.reserveBuffer)) {
 				amount = 1;
+			} else if(RoomIntel.roomReservedBy(this.pos.roomName) == 'Invader') {
+				amount = this.room.controller.pos.availableNeighbors(true).length;
 			}
 		} else if (RoomIntel.roomReservedBy(this.pos.roomName) == MY_USERNAME &&
 				   RoomIntel.roomReservationRemaining(this.pos.roomName) < 1000) {
@@ -48,6 +54,10 @@ export class ReservingOverlord extends Overlord {
 				} else {
 					reserver.task = Tasks.signController(this.room.controller!);
 				}
+			} 
+			else if(RoomIntel.roomReservedBy(this.pos.roomName) == 'Invader') {
+				reserver.goTo(this.room.controller!.pos);
+				reserver.attackController(this.room.controller!);
 			} else {
 				reserver.task = Tasks.reserve(this.room.controller!);
 			}
