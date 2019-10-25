@@ -30,16 +30,16 @@ export const priorityStockAmounts: { [key: string]: number } = {
 export const wantedStockAmounts: { [key: string]: number } = {
 	UH   : 3000, 	// (+100 % attack)
 	KO   : 3000, 	// (+100 % ranged attack)
-	XGHO2: 10000, 	// (-70 % dmg taken)
-	XLHO2: 15000, 	// (+300 % heal)
-	XZHO2: 6000, 	// (+300 % fat decr - speed)
-	XZH2O: 6000, 	// (+300 % dismantle)
-	XKHO2: 20000, 	// (+300 % ranged attack)
-	XUH2O: 20000, 	// (+300 % attack)
+	XGHO2: 33000, 	// 10000, 	// (-70 % dmg taken)
+	XLHO2: 100000,	// 15000, 	// (+300 % heal)
+	XZHO2: 100000,	// 6000, 	// (+300 % fat decr - speed)
+	XZH2O: 10000,	// 6000, 	// (+300 % dismantle)
+	XKHO2: 50000,	// 20000, 	// (+300 % ranged attack)
+	XUH2O: 50000, 	// 20000, 	// (+300 % attack)
 	G    : 5000, 	// For nukes
-	XLH2O: 8000, 	// (+100 % build and repair)
+	XLH2O: 10000,	// 8000, 	// (+100 % build and repair)
 	LH   : 3000, 	// (+50 % build and repair)
-	XUHO2: 3000, 	// (+600 % harvest)
+	XUHO2: 20000,	// 3000, 	// (+600 % harvest)
 	XKH2O: 3000, 	// (+300 % carry)
 	ZK   : 800,	// intermediate
 	UL   : 800,	// intermediate
@@ -49,7 +49,7 @@ export const wantedStockAmounts: { [key: string]: number } = {
 	GH2O : 800,	// (+80 % upgrade)
 	LH2O : 800,	// (+80 % build and repair)
 	KH2O : 800,	// (+200 % carry)
-	XGH2O: 12000,	// (+100 % upgrade)
+	XGH2O: 20000,	//12000,	// (+100 % upgrade)
 };
 
 export const baseStockAmounts: { [key: string]: number } = {
@@ -59,7 +59,8 @@ export const baseStockAmounts: { [key: string]: number } = {
 	[RESOURCE_KEANIUM]  : 5000,
 	[RESOURCE_UTRIUM]   : 5000,
 	[RESOURCE_OXYGEN]   : 5000,
-	[RESOURCE_HYDROGEN] : 5000
+	[RESOURCE_HYDROGEN] : 5000,
+	[RESOURCE_POWER]: 5000
 };
 
 export interface Reaction {

@@ -26,6 +26,7 @@ interface Memory {
 	settings: {
 		signature: string;
 		operationMode: operationMode;
+		resourcesBlackList: [string],
 		log: LoggerMemory;
 		enableVisuals: boolean;
 		allies: string[];
