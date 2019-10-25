@@ -106,16 +106,18 @@ export class DirectiveBaseOperator extends Directive {
 
 	runPowers(powerCreep: PowerCreep) {
 		let b = false;
+		let pri = 0;
 		const priorities = this.memory.powerPriorities;
 		for (let powerId in priorities) {
 			let powerToUse = this.usePower(powerCreep, priorities[powerId]);
 			if (powerToUse && powerToUse.operatePower()) {
 				b = true;
+				pri = priorities[powerId];
 				break;
 			}
 		}
 		if(b == true){
-			return priorities[powerId];
+			return pri;
 		} else {
 			if(Game.flags[powerCreep.name]){
 				powerCreep.moveTo(Game.flags[powerCreep.name], 

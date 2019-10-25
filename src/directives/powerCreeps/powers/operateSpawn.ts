@@ -19,7 +19,8 @@ export class OperateSpawn extends Power {
 			if (this.powerCreep.room && this.powerCreep.carry.ops && this.powerCreep.carry.ops >= 100 
 				&& Memory.colonies[this.powerCreep.room.name].hatchery.stats.uptime > 0.9 
 				&& this.powerCreep.powers[PWR_OPERATE_SPAWN] && (this.powerCreep.powers[PWR_OPERATE_SPAWN].cooldown || 0) < 25) {
-				let spawns = _.filter(this.powerCreep.room.spawns, spawn => (!spawn.effects || (spawn.effects && (!spawn.effects[0] || spawn.effects[0].ticksRemaining < 25))))
+				const spawns = _.filter(this.powerCreep.room.spawns, 
+								spawn => (!spawn.effects || (spawn.effects && (!spawn.effects[0] || spawn.effects[0].ticksRemaining < 25))))
 				const spawn = _.first(spawns);
 				if(spawn) {
 					this.powerCreep.moveTo(spawn, { ignoreRoads: true, range: 1, swampCost: 1, reusePath: 0, visualizePathStyle: 
