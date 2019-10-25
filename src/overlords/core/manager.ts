@@ -216,26 +216,33 @@ export class CommandCenterOverlord extends Overlord {
 		const storageAmount = _.sum(storage.store);
 		const terminalAmount = _.sum(terminal.store);
 		const maxFillRatio = 0.95;
-		const terminalT3Amount = 8000;
+		const terminalT3Amount = 3800; // zGeneral: from 8000 to 3800
 		const terminalOtherAmount = 10000;
 		// Move all non-energy resources from storage to terminal
 		for (const resourceType in terminal.store) {
-			if (storageAmount < storageAmount * maxFillRatio && resourceType != RESOURCE_ENERGY
+			/* if (storageAmount < storageAmount * maxFillRatio && resourceType != RESOURCE_ENERGY
 				&& ((terminal.store[<ResourceConstant>resourceType]! > terminalT3Amount && resourceType.length == 5)
-					|| (terminal.store[<ResourceConstant>resourceType]! > terminalOtherAmount))) {
-				if (this.unloadCarry(manager))
-					return true;
+					|| (terminal.store[<ResourceConstant>resourceType]! > terminalOtherAmount))) { */
+			if (storageAmount < storageAmount * maxFillRatio 
+				&& resourceType != RESOURCE_ENERGY 
+				&& (terminal.store[<ResourceConstant>resourceType]! | 0 ) > terminalT3Amount 
+				&& (resourceType.length == 5 || resourceType == RESOURCE_OPS)) {
+				if (this.unloadCarry(manager)) return true;
 				manager.task = Tasks.withdraw(terminal, <ResourceConstant>resourceType);
 				manager.task.parent = Tasks.transfer(storage, <ResourceConstant>resourceType);
 				return true;
 			}
 		}
 		for (const resourceType in storage.store) {
-			if (terminalAmount < terminal.storeCapacity * maxFillRatio && resourceType != RESOURCE_ENERGY && storage.store[<ResourceConstant>resourceType]! > 0
+			/* if (terminalAmount < terminal.storeCapacity * maxFillRatio && resourceType != RESOURCE_ENERGY && storage.store[<ResourceConstant>resourceType]! > 0
 				&& (terminal.store[<ResourceConstant>resourceType]! < (terminalT3Amount-2000) || resourceType.length != 5
-					&& (terminal.store[<ResourceConstant>resourceType]! < (terminalOtherAmount-2000)) || resourceType == RESOURCE_POWER)) {
-				if (this.unloadCarry(manager))
-					return true;
+					&& (terminal.store[<ResourceConstant>resourceType]! < (terminalOtherAmount-2000)) || resourceType == RESOURCE_POWER)) { */
+				if (terminalAmount < terminal.storeCapacity * maxFillRatio 
+					&& resourceType != RESOURCE_ENERGY 
+					&& (storage.store[<ResourceConstant>resourceType]! | 0 ) > 0 
+					&& ((terminal.store[<ResourceConstant>resourceType]! | 0 ) < (terminalT3Amount - 800)
+					|| (resourceType.length != 5 && resourceType != RESOURCE_OPS))) {			
+				if (this.unloadCarry(manager)) return true;
 				manager.task = Tasks.withdraw(storage, <ResourceConstant>resourceType);
 				manager.task.parent = Tasks.transfer(terminal, <ResourceConstant>resourceType);
 				return true;

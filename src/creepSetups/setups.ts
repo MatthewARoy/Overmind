@@ -53,7 +53,8 @@ export const Setups = {
 			}),
 
 			standardCPU: new CreepSetup(Roles.drone, {
-				pattern  : [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, WORK],
+				// pattern  : [WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, WORK],
+				pattern: [ WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
 				sizeLimit: 1,
 			}),
 
@@ -75,6 +76,12 @@ export const Setups = {
 			sourceKeeper: new CreepSetup(Roles.drone, {
 				pattern  : [WORK, WORK, CARRY, MOVE],
 				sizeLimit: 5,
+			}),
+
+			sourceKeeperHeal: new CreepSetup(Roles.drone, {
+				pattern: [CARRY, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, 
+							MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, HEAL],
+				sizeLimit: 1,
 			})
 		}
 	},
@@ -223,7 +230,8 @@ export const CombatSetups = {
 	zerglings: {
 
 		default: new CreepSetup(Roles.melee, {
-			pattern  : [ATTACK, MOVE],
+			// pattern  : [ATTACK, MOVE],
+			pattern  : [MOVE, ATTACK],
 			sizeLimit: Infinity,
 		}),
 
@@ -280,7 +288,8 @@ export const CombatSetups = {
 		}),
 
 		default: new CreepSetup(Roles.ranged, {
-			pattern  : [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL],
+			// pattern  : [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE, MOVE, HEAL],
+			pattern: [MOVE, MOVE, MOVE, MOVE,RANGED_ATTACK, RANGED_ATTACK, HEAL, HEAL],
 			sizeLimit: Infinity,
 		}),
 
@@ -320,7 +329,8 @@ export const CombatSetups = {
 	healers: {
 
 		default: new CreepSetup(Roles.healer, {
-			pattern  : [HEAL, MOVE],
+			// pattern  : [HEAL, MOVE],
+			pattern  : [MOVE, HEAL],
 			sizeLimit: Infinity,
 		}),
 
@@ -347,7 +357,8 @@ export const CombatSetups = {
 		}),
 
 		default: new CreepSetup(Roles.guardMelee, {
-			pattern  : [TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, HEAL],
+			// pattern  : [TOUGH, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, HEAL],
+			pattern: [MOVE, MOVE, MOVE, MOVE,ATTACK, ATTACK,ATTACK, HEAL, HEAL, MOVE],
 			sizeLimit: Infinity,
 		}),
 

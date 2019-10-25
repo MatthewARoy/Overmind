@@ -409,8 +409,9 @@ export class EvolutionChamber extends HiveCluster {
 		for (const resourceType in this.neededBoosts) {
 			const needAmount = Math.max(this.neededBoosts[resourceType] - (this.colony.assets[resourceType] || 0), 0);
 			if (needAmount > 0) {
-				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType,
-													 needAmount, true, 0);
+				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(<ResourceConstant>resourceType) == -1);
+				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType, needAmount, allowBuy, 0);
+				// this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType, needAmount, true, 0);
 			}
 		}
 		// Obtain resources for reaction queue
@@ -421,9 +422,16 @@ export class EvolutionChamber extends HiveCluster {
 		const missingBasicMinerals = this.colony.abathur.getMissingBasicMinerals(queue);
 		for (const resourceType in missingBasicMinerals) {
 			if (missingBasicMinerals[resourceType] > 0) {
-				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType,
-													 missingBasicMinerals[resourceType], true);
+				const allowBuy = (Memory.settings.resourcesBlackList.indexOf(resourceType) == -1);
+				this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType, 
+					missingBasicMinerals[<ResourceConstant>resourceType], allowBuy);
+				// this.terminalNetwork.requestResource(this.terminal, <ResourceConstant>resourceType,
+				//									 missingBasicMinerals[resourceType], true);
 			}
+		}
+		// buy RESOURCE_POWER
+		if(this.terminal && (this.terminal.store[RESOURCE_POWER]! | 0) < 500 ) {
+			this.terminalNetwork.requestResource(this.terminal, RESOURCE_POWER, 500, true);
 		}
 		// Run the reactions
 		if (this.memory.status == LabStatus.Synthesizing) {

@@ -494,11 +494,22 @@ export class TerminalNetwork implements ITerminalNetwork {
 				}
 			}
 
+			// Order more power if needed
+			if (Game.market.credits > TraderJoe.settings.market.energyCredits) {
+				const averageEnergy = _.sum(this.terminals, terminal => colonyOf(terminal).assets[RESOURCE_POWER] || 0)
+					/ this.terminals.length;
+				if (averageEnergy < 10000) {
+					const poorestTerminal = minBy(this.terminals, terminal => colonyOf(terminal).assets[RESOURCE_POWER] || 0);
+					if (poorestTerminal) {
+						const amount = 10000;
+						Overmind.tradeNetwork.maintainBuyOrder(poorestTerminal, RESOURCE_POWER, amount, 5);
+					}
+				}
+			}
 		}
 		// Do notifications
 		if (this.notifications.length > 0) {
 			log.info(`Terminal network activity: ` + alignedNewline + this.notifications.join(alignedNewline));
 		}
 	}
-
 }

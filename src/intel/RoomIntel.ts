@@ -8,6 +8,9 @@ import {getCacheExpiration, irregularExponentialMovingAverage} from '../utilitie
 import {Zerg} from '../zerg/Zerg';
 import {MY_USERNAME} from '../~settings';
 import {DirectivePowerMine} from "../directives/resource/powerMine";
+import {DirectivePairDestroy} from "../directives/offense/pairDestroy";
+import {DirectiveOutpostDefense} from "../directives/defense/OutpostDefense";
+import {DirectiveControllerAttack} from "../directives/offense/controllerAttack";
 import {Cartographer, ROOMTYPE_ALLEY} from "../utilities/Cartographer";
 import {getAllColonies} from "../Colony";
 import {Segmenter} from "../memory/Segmenter";
@@ -451,6 +454,55 @@ export class RoomIntel {
 		console.log("total ENERGY transfer = " + total);
 	}
 
+	static autoAttackAroundMe(room: Room) {
+		if(room.name == 'W33N33') {
+			return;
+		}
+
+		const nameOutpost =  'OutpostDefend: ' + room.name;
+		const namePair =  'PairDefend: ' + room.name;
+		const nameController =  'ControllerAttack: ' + room.name;
+		
+		let autoAttack = Memory.settings.autoAttack;
+		if (autoAttack && !room.my && room.controller && 
+			!room.controller.safeMode && room.controller.level > 0 && room.controller.level < 6) {
+			const allies = Memory.settings.allies;
+			if(allies.indexOf(_.get(room.controller, ['owner', 'username'])) >= 0){
+				return;
+			}
+			let hasSpawn = _.first(room.find(FIND_STRUCTURES).filter(struct => struct.structureType == STRUCTURE_SPAWN));
+			if (hasSpawn != undefined) {
+				if (DirectivePairDestroy.isPresent(hasSpawn.pos, 'pos')) {
+					return;
+				}
+				let colonies = getAllColonies().filter(colony => colony.level > 6);
+				for (let colony of colonies) {
+					let route = Game.map.findRoute(colony.room, room);
+					if (route != -2 && route.length <= 12) {
+						Game.notify(`FOUND ENEMY IN RANGE ${route.length}, STARTING attacking ${room}`);
+						DirectivePairDestroy.create(hasSpawn.pos,{name: namePair });
+						return;
+					}
+				}
+			} else if (room.controller.pos.availableNeighbors(true).length > 0){
+				if(room.hostiles.length > 0 && !DirectiveOutpostDefense.isPresent(room.controller.pos, 'pos')){
+					DirectiveOutpostDefense.create(room.controller.pos,{name: nameOutpost });
+				}
+				if (DirectiveControllerAttack.isPresent(room.controller.pos, 'pos')) {
+					return;
+				}
+				let colonies = getAllColonies().filter(colony => colony.level > 6);
+				for (let colony of colonies) {
+					let route = Game.map.findRoute(colony.room, room);
+					if (room.name != 'W24N31'  && route != -2 && route.length <= 8) {
+						Game.notify(`CAN DOWNGRADE ENEMY CONTROLLER @ RANGE ${route.length}, STARTING DOWNGRADE ${room}`);
+						DirectiveControllerAttack.create(room.controller.pos,{name: nameController});
+						return;
+					}
+				}
+			}
+		}
+	}
 
 	static run(): void {
 		let alreadyComputedScore = false;
@@ -499,6 +551,7 @@ export class RoomIntel {
 				this.recordControllerInfo(room.controller);
 			}
 			this.minePowerBanks(room);
+			this.autoAttackAroundMe(room);
 		}
 	}
 

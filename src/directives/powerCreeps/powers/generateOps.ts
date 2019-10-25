@@ -19,13 +19,21 @@ export class GenerateOps extends Power {
 			const storage = this.powerCreep.room!.storage;
 			if (!storage) {
 				log.error(`Ops power creep with no storage`);
-			} else {
-				this.powerCreep.moveTo(storage);
-				this.powerCreep.transfer(storage, RESOURCE_OPS, this.powerCreep.carry.ops);
+				return false;
 			}
-		} else {
-			return this.powerCreep.usePower(powerId);
+			else {
+				this.powerCreep.moveTo(storage, 
+					{ ignoreRoads: true, range: 1, swampCost: 1, reusePath: 0, visualizePathStyle: 
+					{ lineStyle: "dashed", fill: 'yellow' } });
+				this.powerCreep.transfer(storage, RESOURCE_OPS, this.powerCreep.carry.ops - 200);
+				return true;
+			}
 		}
-		return ERR_TIRED;
+		else if (this.powerCreep.room && this.powerCreep.powers[PWR_GENERATE_OPS] 
+			&& this.powerCreep.powers[PWR_GENERATE_OPS].cooldown == 0) {
+			this.powerCreep.usePower(powerId);
+			return true;
+		}
+		return false;
 	}
 }

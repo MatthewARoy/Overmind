@@ -28,6 +28,18 @@ export class OutpostDefenseOverlord extends CombatOverlord {
 
 	private handleCombat(zerg: CombatZerg): void {
 		if (this.room && this.room.hostiles.length == 0) {
+			// OutpostDefenseOverlord can be used to harass low RCL rooms., stomp csites codes
+			if(this.room.name == zerg.room.name && zerg.hits == zerg.hitsMax){
+				const enemyConstructionSites = zerg.room.find(FIND_HOSTILE_CONSTRUCTION_SITES, {
+					filter: function(csite: ConstructionSite) {
+						return csite.progress > 0;
+					}
+				});
+				if (enemyConstructionSites.length > 0 && enemyConstructionSites[0].pos.isWalkable(true)) {
+					zerg.goTo(enemyConstructionSites[0].pos);
+					return;
+				}
+			}
 			zerg.doMedicActions(this.room.name);
 		} else {
 			zerg.autoSkirmish(this.pos.roomName);

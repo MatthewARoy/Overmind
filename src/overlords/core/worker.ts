@@ -187,15 +187,9 @@ export class WorkerOverlord extends Overlord {
 											structure => structure.hitsMax - structure.hits) / REPAIR_POWER;
 					const paveTicks = _.sum(this.colony.rooms,
 										  room => this.colony.roadLogistics.energyToRepave(room)) / 1; // repairCost=1
-					let fortifyTicks = 0;
-					let shouldFortify = this.colony.assets.energy > (Game.map.getRoomLinearDistance(this.room.name, 'W16N48') * 15000);
-					if (shouldFortify) {
-						fortifyTicks = 0.25 * _.sum(this.fortifyBarriers, barrier =>
-							Math.max(0, WorkerOverlord.settings.barrierHits[this.colony.level]
-										- barrier.hits)) / REPAIR_POWER;
-					}
+					
 					// max constructionTicks for private server manually setting progress
-					let numWorkers = Math.ceil(2 * (5 * buildTicks + repairTicks + paveTicks + fortifyTicks) /
+					let numWorkers = Math.ceil(2 * (5 * buildTicks + repairTicks + paveTicks) /
 											   (workPartsPerWorker * CREEP_LIFE_TIME));
 					numWorkers = Math.min(numWorkers, MAX_WORKERS);
 					if (this.colony.controller.ticksToDowngrade <= (this.colony.level >= 4 ? 10000 : 2000)) {
@@ -205,9 +199,9 @@ export class WorkerOverlord extends Overlord {
 				});
 			}
 		}
-		if (this.colony.name == 'W14N57') {
+		//if (this.colony.name == 'W14N57') {
 			//numWorkers = 8;
-		}
+		//}
 		this.wishlist(numWorkers, setup);
 	}
 
